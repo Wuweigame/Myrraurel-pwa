@@ -1,3 +1,5 @@
+window.onerror = function(msg, url, line) { alert("Error on line " + line + ": " + msg); };
+
 // ============================================================
 //  Myrr’aurel Tome Generator — app.js
 //  Includes: PWA offline, generator, living archive mode,
