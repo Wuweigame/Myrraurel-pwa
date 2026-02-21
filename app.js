@@ -7,7 +7,7 @@
 
 // –– PWA Service Worker Registration
 if (“serviceWorker” in navigator) {
-navigator.serviceWorker.register(”./sw.js”).catch(() => {});
+navigator.serviceWorker.register(”./sw.js”).catch(function() {});
 }
 
 // –– DOM helpers
@@ -239,7 +239,7 @@ const tags = topic === “Any”
 const dm = makeDmTruth(topic, wing, depth, risk, state.mode);
 
 const tome = {
-id: Date.now() + Math.random().toString(36,
+id: crypto.randomUUID(),
 createdAt: new Date().toISOString(),
 wing, depth, topic, risk,
 title:    makeTitle(topic, wing),
