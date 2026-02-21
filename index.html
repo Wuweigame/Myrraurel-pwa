@@ -2,86 +2,121 @@
 
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Myrr'aurel — Tome Generator</title>
-  <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
-  <meta name="theme-color" content="#08070a" />
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Myrr'aurel">
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Myrr'aurel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Crimson+Pro:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#08070a;--panel:#100f14;--border:#2a2535;--text:#ddd8c8;--muted:#6b6375;--accent:#c9a86c;--accent2:#a07840;--danger:#a85050;--alive:#8a6fba;--green:#6a9e7e}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Crimson Pro',Georgia,serif;background:var(--bg);color:var(--text);min-height:100vh}
+header{border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100;background:var(--bg)}
+h1{font-family:'Cinzel',serif;font-size:1.4rem;letter-spacing:3px;color:var(--accent)}
+.sub{font-size:.7rem;color:var(--muted);letter-spacing:1px;font-family:'Cinzel',serif;margin-top:4px}
+.clocks-bar{margin-left:auto;display:flex;gap:20px}
+.clock-group{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.clock-label{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.pips{display:flex;gap:4px}
+.pip{width:10px;height:10px;border-radius:50%;border:1px solid var(--border);background:transparent}
+.pip.fa{background:var(--accent);border-color:var(--accent)}
+.pip.fc{background:var(--alive);border-color:var(--alive)}
+main{max-width:1400px;margin:0 auto;display:grid;gap:12px;padding:16px;grid-template-columns:1fr}
+@media(min-width:900px){main{grid-template-columns:280px 1fr 340px}}
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px}
+.panel-title{font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+.field{margin-bottom:12px}
+.field label{display:block;font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+select,.search-input{width:100%;padding:8px 10px;background:#0d0c11;border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Crimson Pro',serif;font-size:.95rem;appearance:none}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.btn{padding:8px 12px;border-radius:8px;border:1px solid var(--border);background:#0d0c11;color:var(--text);font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn-primary{border-color:var(--accent2);color:var(--accent);flex:1}
+.btn-accent{border-color:var(--green);color:var(--green)}
+.btn-danger{border-color:#4b2a2a;color:var(--danger)}
+.btn-sm{font-size:.55rem;padding:6px 10px}
+.divider{border-top:1px solid var(--border);margin:12px 0}
+.mode-box{background:#0d0c11;border:1px solid var(--border);border-radius:8px;padding:10px;margin-bottom:12px}
+.mode-box .mode-label{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:8px}
+.toggle-group{display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:6px}
+.tbtn{flex:1;padding:7px 4px;border:none;background:transparent;color:var(--muted);font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:1px;text-transform:uppercase;cursor:pointer}
+.tbtn.active{background:var(--accent2);color:var(--bg)}
+.mode-desc{font-size:.78rem;color:var(--muted);font-style:italic}
+.hint{font-size:.78rem;color:var(--muted);font-style:italic}
+.install-hint{font-size:.78rem;color:var(--muted);margin-top:12px;padding:8px;border:1px dashed var(--border);border-radius:8px;line-height:1.5}
+.install-hint em{color:var(--accent);font-style:normal}
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 20px;gap:10px;color:var(--muted)}
+.empty-glyph{font-size:48px;opacity:.2}
+.card-title{font-family:'Cinzel',serif;font-size:1.05rem;color:var(--accent);line-height:1.3;margin-bottom:10px}
+.badges{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.badge{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:1.5px;text-transform:uppercase;padding:3px 8px;border:1px solid var(--border);border-radius:999px;color:var(--muted)}
+.badge.rh{border-color:#4b2a2a;color:var(--danger)}
+.badge.db{border-color:var(--alive);color:#c9b6f0}
+.slabel{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin:12px 0 6px;display:flex;align-items:center;gap:8px}
+.slabel::after{content:'';flex:1;height:1px;background:var(--border)}
+.card-meta p{font-size:.9rem;color:#a89f8a;line-height:1.5;margin-bottom:3px}
+.card-meta b{color:var(--text);font-weight:400}
+.excerpt{font-style:italic;color:var(--text);line-height:1.7;font-size:.97rem;padding:12px;background:#0d0c11;border-left:2px solid var(--accent2);border-radius:0 8px 8px 0}
+details{margin-top:10px;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+summary{cursor:pointer;font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:#c9b6f0;padding:10px;background:#0d0c11;list-style:none}
+.dm-inner{padding:12px;background:#0a0910}
+.dm-row{display:grid;grid-template-columns:100px 1fr;gap:8px;margin-bottom:8px;font-size:.88rem;line-height:1.5}
+.dm-key{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding-top:2px}
+.ledger-list{display:grid;gap:8px;max-height:55vh;overflow-y:auto}
+.li{background:#0d0c11;border:1px solid var(--border);border-radius:8px;padding:10px 12px}
+.li-title{font-family:'Cinzel',serif;font-size:.75rem;color:var(--accent);margin-bottom:4px;line-height:1.3}
+.li-meta{font-size:.78rem;color:var(--muted);line-height:1.5}
+.ledger-empty{color:var(--muted);font-style:italic;text-align:center;padding:20px;font-size:.9rem}
+footer{border-top:1px solid var(--border);padding:12px 20px;text-align:center;color:var(--muted);font-size:.72rem}
+.risk-val{color:var(--accent);font-family:'Cinzel',serif;margin-left:4px}
+.clock-controls{display:flex;align-items:center;gap:8px;margin-top:8px}
+</style>
 </head>
 <body>
-
-  <div class="scanlines"></div>
-  <div class="vignette"></div>
-
-  <header>
-    <div class="header-inner">
-      <div class="glyph-mark">⬡</div>
-      <div class="header-text">
-        <h1>Myrr'aurel</h1>
-        <p class="sub">The Living Archive — Tome Generator & Ledger</p>
-      </div>
-      <div class="clocks-bar">
-        <div class="clock-group">
-          <span class="clock-label">Attention</span>
-          <div class="pips" id="attentionPips"></div>
-        </div>
-        <div class="clock-group">
-          <span class="clock-label">Contamination</span>
-          <div class="pips" id="contaminationPips"></div>
-        </div>
-      </div>
+<header>
+  <div>
+    <h1>Myrr'aurel</h1>
+    <p class="sub">The Living Archive</p>
+  </div>
+  <div class="clocks-bar">
+    <div class="clock-group">
+      <span class="clock-label">Attention</span>
+      <div class="pips" id="attentionPips"></div>
     </div>
-  </header>
+    <div class="clock-group">
+      <span class="clock-label">Contamination</span>
+      <div class="pips" id="contaminationPips"></div>
+    </div>
+  </div>
+</header>
 
-  <main class="grid">
-
-```
-<!-- COLUMN 1: Controls -->
-<section class="panel panel-controls">
-  <h2 class="panel-title"><span class="panel-rune">I</span> Retrieve Tome</h2>
-
-  <div class="field">
-    <label>Wing</label>
-    <div class="select-wrap">
+<main>
+  <div class="panel">
+    <div class="panel-title">I — Retrieve Tome</div>
+    <div class="field">
+      <label>Wing</label>
       <select id="wing">
         <option value="Arcane">Arcane</option>
-        <option value="Planar">Planar & Cosmic</option>
+        <option value="Planar">Planar &amp; Cosmic</option>
         <option value="Forbidden">Forbidden</option>
         <option value="Bestiary">Bestiary</option>
         <option value="Liturgies">Liturgies</option>
       </select>
     </div>
-  </div>
-
-  <div class="field">
-    <label>Depth</label>
-    <div class="select-wrap">
+    <div class="field">
+      <label>Depth</label>
       <select id="depth">
         <option value="Hall">Hall</option>
         <option value="Vault">Vault</option>
         <option value="Black Index">Black Index</option>
       </select>
     </div>
-  </div>
-
-  <div class="field">
-    <label>Risk <span id="riskVal" class="risk-val">2</span></label>
-    <div class="range-track">
-      <input id="risk" type="range" min="0" max="5" value="2" />
-      <div class="range-fill" id="rangeFill"></div>
+    <div class="field">
+      <label>Risk <span class="risk-val" id="riskVal">2</span></label>
+      <input id="risk" type="range" min="0" max="5" value="2" style="width:100%"/>
     </div>
-  </div>
-
-  <div class="field">
-    <label>Topic</label>
-    <div class="select-wrap">
+    <div class="field">
+      <label>Topic</label>
       <select id="topic">
         <option value="Any">Any</option>
         <option value="Eldraxis">Eldraxis</option>
@@ -93,75 +128,245 @@
         <option value="Kyros">Kyros</option>
       </select>
     </div>
-  </div>
-
-  <div class="mode-toggle">
-    <span class="mode-label">Library Mode:</span>
-    <div class="toggle-group">
-      <button class="toggle-btn active" id="modeNeutral">Neutral Archive</button>
-      <button class="toggle-btn" id="modeAlive">Living Archive</button>
+    <div class="mode-box">
+      <span class="mode-label">Library Mode</span>
+      <div class="toggle-group">
+        <button class="tbtn active" id="modeNeutral">Neutral Archive</button>
+        <button class="tbtn" id="modeAlive">Living Archive</button>
+      </div>
+      <p class="mode-desc" id="modeDesc">Danger only in Forbidden wing &amp; Black Index.</p>
     </div>
-    <p class="mode-desc" id="modeDesc">Danger only in Forbidden wing & Black Index depths.</p>
+    <div class="actions">
+      <button class="btn btn-primary" id="btnPull">&#10022; Retrieve Tome</button>
+      <button class="btn btn-sm" id="btnReroll" disabled>Reroll</button>
+      <button class="btn btn-accent btn-sm" id="btnSave" disabled>Save to Ledger</button>
+    </div>
+    <div class="divider"></div>
+    <div class="actions">
+      <button class="btn btn-sm" id="btnExport">Export</button>
+      <label class="btn btn-sm" style="cursor:pointer">Import<input id="importFile" type="file" accept="application/json" style="display:none"/></label>
+      <button class="btn btn-sm btn-danger" id="btnClear">Clear Ledger</button>
+    </div>
+    <div class="clock-controls">
+      <button class="btn btn-sm" id="btnResetClocks">Reset Clocks</button>
+      <span class="hint">Clocks persist across sessions.</span>
+    </div>
+    <p class="install-hint">iPad: Safari &#8594; Share &#8594; <em>Add to Home Screen</em></p>
   </div>
 
-  <div class="actions">
-    <button class="btn btn-primary" id="btnPull">
-      <span class="btn-rune">✦</span> Retrieve Tome
-    </button>
-    <button class="btn btn-secondary" id="btnReroll" disabled>Reroll</button>
-    <button class="btn btn-accent" id="btnSave" disabled>Save to Ledger</button>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="actions actions-util">
-    <button class="btn btn-util" id="btnExport">Export Ledger</button>
-    <label class="btn btn-util fileBtn">
-      Import Ledger
-      <input id="importFile" type="file" accept="application/json" />
-    </label>
-    <button class="btn btn-util btn-danger" id="btnClear">Clear Ledger</button>
-  </div>
-
-  <div class="clock-controls">
-    <button class="btn btn-util btn-clock" id="btnResetClocks">Reset Clocks</button>
-    <span class="hint">Clocks persist across sessions.</span>
-  </div>
-
-  <p class="install-hint">
-    📱 iPad: Safari → Share → <em>Add to Home Screen</em>
-  </p>
-</section>
-
-<!-- COLUMN 2: Current Tome -->
-<section class="panel panel-tome">
-  <h2 class="panel-title"><span class="panel-rune">II</span> Current Tome</h2>
-  <div id="tomeOutput" class="output empty">
-    <div class="empty-state">
-      <div class="empty-glyph">⬡</div>
-      <p>Retrieve a tome to reveal its catalog card, excerpt, and DM payload.</p>
-      <p class="hint">The shelves are said to listen better than they see.</p>
+  <div class="panel">
+    <div class="panel-title">II — Current Tome</div>
+    <div id="tomeOutput">
+      <div class="empty-state">
+        <div class="empty-glyph">&#x2B21;</div>
+        <p>Retrieve a tome to reveal its catalog card, excerpt, and DM payload.</p>
+        <p class="hint">The shelves are said to listen better than they see.</p>
+      </div>
     </div>
   </div>
-</section>
 
-<!-- COLUMN 3: Ledger -->
-<section class="panel panel-ledger">
-  <h2 class="panel-title"><span class="panel-rune">III</span> Ledger</h2>
-  <div class="field">
-    <input id="search" type="text" placeholder="Search title, author, wing, tags…" class="search-input" />
+  <div class="panel">
+    <div class="panel-title">III — Ledger</div>
+    <div class="field">
+      <input id="search" type="text" placeholder="Search title, author, wing..." class="search-input"/>
+    </div>
+    <div class="ledger-list" id="ledger"></div>
   </div>
-  <div id="ledger" class="ledger"></div>
-</section>
-```
+</main>
 
-  </main>
+<footer><small>Myrr'aurel &mdash; Ledger stored locally on your device</small></footer>
 
-  <footer>
-    <small>Myrr'aurel PWA &mdash; Ledger stored locally on your device &mdash; Works offline</small>
-  </footer>
+<script>
+var SK = "myrraurel_ledger_v1";
+var CK = "myrraurel_clocks_v1";
+var currentTome = null;
+var ledger = [];
+var clocks = {attention:0,contamination:0};
+var mode = "neutral";
 
-  <script src="app.js"></script>
+try { ledger = JSON.parse(localStorage.getItem(SK)) || []; } catch(e) { ledger = []; }
+try { clocks = JSON.parse(localStorage.getItem(CK)) || {attention:0,contamination:0}; } catch(e) { clocks = {attention:0,contamination:0}; }
+
+var humanNames = ["Alvor","Bercan","Cordun","Duneld","Elmar","Maren","Renys","Syltor","Torvald","Valken"];
+var andorianNames = ["Vaelith","Isvoren","Thaleth","Aethwyn","Silvor","Kharen","Lythan","Eiravael"];
+var uldarNames = ["Zaelgryss","Drahval","Valshyr","Zahrgrynn","Thaenkaal","Lysnythyr"];
+var eras = ["Pre-Fall Andorian","Early Dark Age","Late Andorian Decline","Post-Cataclysm Fragment","Disputed Interregnum","Third Age of the Weave"];
+var physList = ["intact, suspiciously pristine","worm-eaten at the margins","scorched at the edges","palimpsest over older text","stitched from mismatched quires","annotated in an unknown hand","missing its title page","sealed with wax already broken"];
+var titleA = ["On the Black Index of","The Codex of","Fragments from Elarien concerning","A Catalogue of Names relating to","Margins and Annotations on","The Chronicle of Silence and","A Refutation of","Testimony from the Deep Vaults on"];
+var titleB = ["Root and Silence","Etherium Dissolution","Ash and Echo","The Unwritten Wing","Omissions and Gates","The Woven Silences","Named Wounds","Forbidden Crossreferences"];
+var topicList = ["Eldraxis","Weave Theory","Heartwood","Life Stones","Vey'kar","Silver Flame","Kyros"];
+var openers = ["In the measureless interval where the Weave thins, there are signs that do not belong to any honest chronology.","What follows is presented as theory. That it has happened is not in dispute.","The study of this subject produces a specific kind of forgetting in those who pursue it too far.","Let the reader consider what was omitted from adjacent shelves before proceeding.","It has been observed by three archivists, all since retired, that this volume reshelves itself."];
+var middles = ["The hand is practiced, the language formal, as though written for those who already know the price.","The ink is wrong — too dark, as though it remembers the hand that bled it.","A margin note reads: do not read this aloud near open water.","The style is measured, academic — used when the author wishes to seem unconcerned."];
+var closers = ["Should the reader find that passages shift between readings, set the tome down and walk to the exit without looking at the shelves.","What answers does so by means that do not survive description in daylight.","The omission from the official index is deliberate. This volume should not be on this shelf.","If you must proceed, do so with one truth kept unspoken, for the shelves listen better than they see."];
+var truthTypes = ["Key","Lie","Bait","Prophecy","Trap","Map-Fragment","Cipher","Confession","Warning","Decoy"];
+var factions = ["Sylvanox cell","Vey'kar emissary","Silver Flame remnant","Andorian echo-warden","Eldraxian patron-signal","unknown third party","the Archivist's Council"];
+var hookPhrases = ["cross-references a missing volume in","directly contradicts the canonical account held in","names a location accessible only via","contains a cipher whose key is held in"];
+var cNeutral = [
+  {text:"No immediate consequence. The tome is what it appears to be.",a:0,c:0},
+  {text:"A useful truth is obtained, but cross-referencing reveals an inconsistency.",a:0,c:0},
+  {text:"A false lead appears convincing unless the party consults a second source.",a:0,c:0},
+  {text:"The catalog entry has been altered since last index. Someone knew to look.",a:1,c:0}
+];
+var cAlive = [
+  {text:"Attention +1. The stacks re-index around the reader. Something has noticed.",a:1,c:0},
+  {text:"Contamination +1. Dreams recur with a new glyph.",a:0,c:1},
+  {text:"A named NPC becomes aware of the party's inquiry within the week.",a:1,c:0},
+  {text:"Attention +1, Contamination +1. The tome reshelves itself before the session ends.",a:1,c:1},
+  {text:"Contamination +1. The reader retains one phrase they cannot stop reciting.",a:0,c:1},
+  {text:"Attention +2. A Myrr'aurel archivist arrives with polite, pointed questions.",a:2,c:0},
+  {text:"No clock change. The library withholds consequence for now.",a:0,c:0},
+  {text:"Contamination +2. A false memory is planted: the reader is certain they have read this before.",a:0,c:2}
+];
+
+function rnd(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+function roll(a,b) { return Math.floor(Math.random()*(b-a+1))+a; }
+function uid() { return Date.now().toString(36)+Math.random().toString(36).slice(2); }
+function esc(s) { return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+function shelf(wing,depth) {
+  var w = wing.slice(0,2).toUpperCase();
+  var d = depth==="Hall"?"H":depth==="Vault"?"V":"B";
+  return w+"-"+d+"-"+roll(1,9)+roll(0,9)+"."+roll(1,7)+"."+roll(1,12);
+}
+
+function go() {
+  var wing = document.getElementById("wing").value;
+  var depth = document.getElementById("depth").value;
+  var topic = document.getElementById("topic").value;
+  var risk = Number(document.getElementById("risk").value);
+  var pool = wing==="Forbidden" ? uldarNames : wing==="Planar" ? andorianNames : humanNames;
+  var tag = topic==="Any" ? rnd(topicList) : topic;
+  var cpool = mode==="alive" ? cAlive : cNeutral;
+  var consequence = rnd(cpool);
+  var dm = {
+    type: rnd(truthTypes),
+    faction: rnd(factions),
+    hook: "This tome "+rnd(hookPhrases)+" the "+depth+" of the "+wing+" Wing.",
+    note: risk>=3 ? "Contradicts an established claim — may be censorship or a lure." : "Consistent with known fragments, but notably incomplete.",
+    consequence: consequence
+  };
+  currentTome = {
+    id: uid(),
+    at: new Date().toISOString(),
+    wing:wing, depth:depth, topic:topic, risk:risk,
+    title: rnd(titleA)+" "+rnd(titleB)+(topic!=="Any"?" — "+topic:""),
+    author: rnd(pool),
+    era: rnd(eras),
+    phys: rnd(physList),
+    shelf: shelf(wing,depth),
+    excerpt: rnd(openers)+" "+rnd(middles)+" "+rnd(closers),
+    dm: dm,
+    tag: tag
+  };
+  paintTome();
+  document.getElementById("btnSave").disabled = false;
+  document.getElementById("btnReroll").disabled = false;
+  if (consequence.a || consequence.c) {
+    clocks.attention = Math.min(6, clocks.attention+consequence.a);
+    clocks.contamination = Math.min(6, clocks.contamination+consequence.c);
+    localStorage.setItem(CK, JSON.stringify(clocks));
+    paintClocks();
+  }
+}
+
+function paintTome() {
+  var t = currentTome;
+  if (!t) { document.getElementById("tomeOutput").innerHTML = '<div class="empty-state"><div class="empty-glyph">&#x2B21;</div><p>Retrieve a tome to reveal its contents.</p></div>'; return; }
+  var rc = t.risk>=4 ? "rh" : "";
+  var dc = t.depth==="Black Index" ? "db" : "";
+  document.getElementById("tomeOutput").innerHTML =
+    '<div class="card-title">'+esc(t.title)+'</div>'+
+    '<div class="badges"><span class="badge">'+esc(t.wing)+'</span><span class="badge '+dc+'">'+esc(t.depth)+'</span><span class="badge '+rc+'">Risk '+t.risk+'</span><span class="badge">'+esc(t.shelf)+'</span></div>'+
+    '<div class="slabel">Catalog Card</div>'+
+    '<div class="card-meta"><p><b>Author:</b> '+esc(t.author)+' &nbsp;&middot;&nbsp; <b>Era:</b> '+esc(t.era)+'</p><p><b>Condition:</b> '+esc(t.phys)+'</p><p><b>Tags:</b> '+esc(t.tag)+'</p></div>'+
+    '<div class="slabel">Excerpt</div>'+
+    '<div class="excerpt">'+esc(t.excerpt)+'</div>'+
+    '<div class="slabel">DM Payload</div>'+
+    '<details><summary>Reveal DM Payload</summary><div class="dm-inner">'+
+    '<div class="dm-row"><span class="dm-key">True Nature</span><span>'+esc(t.dm.type)+'</span></div>'+
+    '<div class="dm-row"><span class="dm-key">Faction</span><span>'+esc(t.dm.faction)+'</span></div>'+
+    '<div class="dm-row"><span class="dm-key">Hook</span><span>'+esc(t.dm.hook)+'</span></div>'+
+    '<div class="dm-row"><span class="dm-key">Note</span><span>'+esc(t.dm.note)+'</span></div>'+
+    '<div class="dm-row"><span class="dm-key">Consequence</span><span>'+esc(t.dm.consequence.text)+'</span></div>'+
+    '</div></details>';
+}
+
+function paintLedger() {
+  var q = (document.getElementById("search").value||"").toLowerCase();
+  var list = ledger.filter(function(t){ return (t.title+" "+t.author+" "+t.wing+" "+t.tag).toLowerCase().indexOf(q)!==-1; });
+  var el = document.getElementById("ledger");
+  if (!list.length) { el.innerHTML = '<div class="ledger-empty">'+(ledger.length===0?"No tomes saved yet.":"No results.")+'</div>'; return; }
+  el.innerHTML = list.map(function(t){
+    return '<div class="li"><div class="li-title">'+esc(t.title)+'</div><div class="li-meta">'+esc(t.wing)+' &middot; '+esc(t.depth)+' &middot; Risk '+t.risk+' &middot; '+esc(t.shelf)+'</div><div class="li-meta">'+esc(t.author)+' &middot; '+esc(t.era)+'</div></div>';
+  }).join("");
+}
+
+function paintClocks() {
+  paintPips("attentionPips", clocks.attention, "fa");
+  paintPips("contaminationPips", clocks.contamination, "fc");
+}
+
+function paintPips(id, val, cls) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  el.innerHTML = "";
+  for (var i=0; i<6; i++) {
+    var d = document.createElement("div");
+    d.className = "pip"+(i<val?" "+cls:"");
+    el.appendChild(d);
+  }
+}
+
+function setMode(m) {
+  mode = m;
+  document.getElementById("modeNeutral").className = "tbtn"+(m==="neutral"?" active":"");
+  document.getElementById("modeAlive").className = "tbtn"+(m==="alive"?" active":"");
+  document.getElementById("modeDesc").textContent = m==="alive" ? "Every pull can increment Attention & Contamination clocks." : "Danger only in Forbidden wing & Black Index.";
+}
+
+document.getElementById("risk").addEventListener("input", function(){ document.getElementById("riskVal").textContent = this.value; });
+document.getElementById("btnPull").addEventListener("click", go);
+document.getElementById("btnReroll").addEventListener("click", go);
+document.getElementById("btnSave").addEventListener("click", function(){
+  if (!currentTome) return;
+  ledger.unshift(currentTome);
+  localStorage.setItem(SK, JSON.stringify(ledger));
+  paintLedger();
+  document.getElementById("btnSave").textContent = "Saved!";
+  setTimeout(function(){ document.getElementById("btnSave").textContent = "Save to Ledger"; }, 1500);
+});
+document.getElementById("btnExport").addEventListener("click", function(){
+  var b = new Blob([JSON.stringify(ledger,null,2)],{type:"application/json"});
+  var u = URL.createObjectURL(b);
+  var a = document.createElement("a");
+  a.href=u; a.download="myrraurel_ledger.json"; a.click();
+  URL.revokeObjectURL(u);
+});
+document.getElementById("btnClear").addEventListener("click", function(){
+  if (!confirm("Clear ledger?")) return;
+  ledger=[]; localStorage.setItem(SK,JSON.stringify(ledger)); paintLedger();
+});
+document.getElementById("btnResetClocks").addEventListener("click", function(){
+  if (!confirm("Reset clocks?")) return;
+  clocks={attention:0,contamination:0}; localStorage.setItem(CK,JSON.stringify(clocks)); paintClocks();
+});
+document.getElementById("importFile").addEventListener("change", function(e){
+  if (!e.target.files||!e.target.files[0]) return;
+  var r = new FileReader();
+  r.onload = function(){
+    try { var d=JSON.parse(r.result); if (!Array.isArray(d)) throw new Error("bad"); ledger=d; localStorage.setItem(SK,JSON.stringify(ledger)); paintLedger(); }
+    catch(e){ alert("Import failed: "+e.message); }
+  };
+  r.readAsText(e.target.files[0]);
+});
+document.getElementById("search").addEventListener("input", paintLedger);
+document.getElementById("modeNeutral").addEventListener("click", function(){ setMode("neutral"); });
+document.getElementById("modeAlive").addEventListener("click", function(){ setMode("alive"); });
+
+paintTome();
+paintLedger();
+paintClocks();
+</script>
 
 </body>
 </html>
