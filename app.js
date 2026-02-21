@@ -1,493 +1,288 @@
-window.onerror = function(msg, url, line) { alert("Error on line " + line + ": " + msg); };
+window.onerror = function(msg, url, line) { alert(“Error line “ + line + “: “ + msg); };
 
-// ============================================================
-//  Myrr’aurel Tome Generator — app.js
-//  Includes: PWA offline, generator, living archive mode,
-//  Attention/Contamination clocks, IndexedDB-lite (localStorage),
-//  full ledger with search, export/import.
-// ============================================================
-
-// –– PWA Service Worker Registration
 if (“serviceWorker” in navigator) {
 navigator.serviceWorker.register(”./sw.js”).catch(function() {});
 }
 
-// –– DOM helpers
-const $ = (id) => document.getElementById(id);
-const STORE_KEY = “myrraurel_ledger_v1”;
-const CLOCK_KEY  = “myrraurel_clocks_v1”;
+var STORE_KEY = “myrraurel_ledger_v1”;
+var CLOCK_KEY = “myrraurel_clocks_v1”;
 
-// –– State
-const state = {
-currentTome: null,
-ledger: loadLedger(),
-clocks: loadClocks(),
-mode: “neutral” // “neutral” | “alive”
-};
+var currentTome = null;
+var ledger = loadLedger();
+var clocks = loadClocks();
+var mode = “neutral”;
 
 function loadLedger() {
 try { return JSON.parse(localStorage.getItem(STORE_KEY)) || []; }
-catch { return []; }
+catch(e) { return []; }
 }
-
 function saveLedger() {
-localStorage.setItem(STORE_KEY, JSON.stringify(state.ledger));
+localStorage.setItem(STORE_KEY, JSON.stringify(ledger));
 }
-
 function loadClocks() {
 try { return JSON.parse(localStorage.getItem(CLOCK_KEY)) || { attention: 0, contamination: 0 }; }
-catch { return { attention: 0, contamination: 0 }; }
+catch(e) { return { attention: 0, contamination: 0 }; }
 }
-
 function saveClocks() {
-localStorage.setItem(CLOCK_KEY, JSON.stringify(state.clocks));
+localStorage.setItem(CLOCK_KEY, JSON.stringify(clocks));
 }
 
-// ============================
-//   GENERATION DATA
-// ============================
+var humanNames = [“Alvor”,“Bercan”,“Cordun”,“Duneld”,“Elmar”,“Maren”,“Renys”,“Syltor”,“Torvald”,“Valken”,“Kyren”,“Vordan”];
+var andorianNames = [“Vaelith”,“Isvoren”,“Thaleth”,“Aethwyn”,“Silvor”,“Kharen”,“Vorequan”,“Lythan”,“Eiravael”,“Zanareth”];
+var uldarNames = [“Zaelgryss”,“Drahval”,“Valshyr”,“Shyrmyrr”,“Zahrgrynn”,“Grynnthaen”,“Thaenkaal”,“Kaallys”,“Lysnythyr”];
 
-const syllables = {
-human:    [“Al”,“Ber”,“Cor”,“Dun”,“Eld”,“Mar”,“Ren”,“Syl”,“Tor”,“Val”,“Ky”,“Vor”,“Alis”,“Mer”,“Dav”,“Sol”,“Ran”],
-andorian: [“Vael”,“Isvo”,“Thal”,“Aeth”,“Sil”,“Khar”,“Vore”,“Quan”,“Lyth”,“Eira”,“Zanar”,“Selwyn”,“Caer”,“Thyr”,“Nael”],
-uldar:    [“Zael”,“Drah”,“Val”,“Shyr”,“Myrr”,“Zahr”,“Grynn”,“Thaen”,“Kaal”,“Lys”,“Nythyr”,“Thyraal”,“Vosk”,“Drael”,“Gryss”]
-};
-
-const topicMotifs = {
-“Eldraxis”:     [“unmaking”,“silence between worlds”,“fractured memory”,“black spiral”,“echo-cities”,“the Hunger that waits”,“inverted names”],
-“Weave Theory”: [“harmonics”,“anchors”,“resonance”,“geometries”,“invariants”,“the seventh thread”,“woven silences”],
-“Heartwood”:    [“root-archives”,“sap as ink”,“dream-boughs”,“living strata”,“buried pulse”,“the oldest ring”,“whispered rings”],
-“Life Stones”:  [“Etherium lattice”,“centuries of recharge”,“planet-keys”,“the missing fixture”,“sixfold circuit”,“sleeping light”,“the Cradle”],
-“Vey’kar”:      [“shadow-forged vows”,“half-freed souls”,“the blade that binds”,“cold devotion”,“betrayal-glyphs”,“the Bound Name”,“shadow-tithes”],
-“Silver Flame”: [“coalition oaths”,“sacrificial calculus”,“banishment rites”,“saints of ash”,“warding geometry”,“the Last Accord”,“remembered fire”],
-“Kyros”:        [“rogue prison-world”,“mined Etherium”,“false voices”,“void frost”,“sealed hunger”,“the Warden’s scar”,“ice-logic”],
-“Any”:          [“omissions”,“marginal warnings”,“torn indices”,“forbidden crossrefs”,“catalogue lies”,“unnamed witnesses”,“the gap between chapters”]
-};
-
-const wingAuthors = {
-“Arcane”:    [“human”,“andorian”],
-“Planar”:    [“andorian”,“uldar”],
-“Forbidden”: [“uldar”,“andorian”,“human”],
-“Bestiary”:  [“human”,“andorian”],
-“Liturgies”: [“andorian”,“human”]
-};
-
-const consequencesNeutral = [
-{ text: “No immediate consequence. The tome is what it appears to be.”, attention: 0, contamination: 0 },
-{ text: “A useful truth is obtained, but cross-referencing reveals an inconsistency worth noting.”, attention: 0, contamination: 0 },
-{ text: “A false lead appears convincing unless the party consults a second source.”, attention: 0, contamination: 0 },
-{ text: “The tome is genuine but heavily redacted — key sections have been excised cleanly.”, attention: 0, contamination: 0 },
-{ text: “The catalog entry for this tome has been altered since last index. Someone knew to look.”, attention: 1, contamination: 0 }
+var eras = [“Pre-Fall Andorian”,“Early Dark Age”,“Late Andorian Decline”,“Post-Cataclysm Fragment”,“Disputed Interregnum”,“Third Age of the Weave”];
+var physicalList = [“intact, suspiciously pristine”,“worm-eaten at the margins”,“scorched at the edges”,“palimpsest over older text”,“stitched from mismatched quires”,“annotated heavily in an unknown hand”,“missing its title page”,“sealed with wax already broken”];
+var titleForms = [“On the Black Index of”,“The Codex of”,“Fragments from Elarien concerning”,“A Catalogue of Names relating to”,“Margins and Annotations on”,“The Chronicle of Silence and”,“A Refutation of the Known History of”,“Testimony from the Deep Vaults on”];
+var titleSubjects = [“Root and Silence”,“Etherium Dissolution”,“Ash and Echo”,“The Unwritten Wing”,“Omissions and Gates”,“Forbidden Crossreferences”,“The Woven Silences”,“Named Wounds”];
+var topicList = [“Eldraxis”,“Weave Theory”,“Heartwood”,“Life Stones”,“Vey’kar”,“Silver Flame”,“Kyros”];
+var excerptOpeners = [“In the measureless interval where the Weave thins, there are signs that do not belong to any honest chronology.”,“What follows is presented as theory. That it has happened is not in dispute.”,“The study of this subject produces a specific kind of forgetting in those who pursue it too far.”,“Let the reader consider what was omitted from the adjacent shelves before proceeding.”,“It has been observed by no fewer than three archivists, all since retired, that this volume reshelves itself.”];
+var excerptMiddles = [“The hand is practiced, the language formal, as though written for those who already know the price.”,“The ink is wrong — too dark, as though it remembers the hand that bled it.”,“A margin note in different ink reads: do not read this aloud near open water.”,“The style is measured, academic — used when the author wishes to seem unconcerned.”];
+var excerptClosers = [“Should the reader find that certain passages shift between readings, set the tome down and walk to the exit without looking at the shelves.”,“What answers does so by means that do not survive description in daylight.”,“The omission from the official index is deliberate. This volume should not be on this shelf.”,“If you must proceed, do so with one truth kept unspoken, for the shelves listen better than they see.”];
+var truthTypes = [“Key”,“Lie”,“Bait”,“Prophecy”,“Trap”,“Map-Fragment”,“Cipher”,“Confession”,“Warning”,“Decoy”];
+var factions = [“Sylvanox cell”,“Vey’kar emissary”,“Silver Flame remnant”,“Andorian echo-warden”,“Eldraxian patron-signal”,“an unknown third party”,“the Archivist’s Council”];
+var hooks = [“cross-references a missing volume hidden deeper in the”,“directly contradicts the canonical account held in the”,“names a location accessible only via the”,“contains a cipher whose key is held in the”];
+var consequencesNeutral = [
+{ text: “No immediate consequence. The tome is what it appears to be.”, a: 0, c: 0 },
+{ text: “A useful truth is obtained, but cross-referencing reveals an inconsistency.”, a: 0, c: 0 },
+{ text: “A false lead appears convincing unless the party consults a second source.”, a: 0, c: 0 },
+{ text: “The catalog entry for this tome has been altered since last index.”, a: 1, c: 0 }
 ];
-
-const consequencesAlive = [
-{ text: “Attention +1. The stacks re-index around the reader. Something has noticed the inquiry.”, attention: 1, contamination: 0 },
-{ text: “Contamination +1. Dreams recur with a new glyph — a character, a shape, a door.”, attention: 0, contamination: 1 },
-{ text: “A named NPC becomes aware of the party’s inquiry within the week.”, attention: 1, contamination: 0 },
-{ text: “Attention +1, Contamination +1. The tome reshelves itself before the session ends.”, attention: 1, contamination: 1 },
-{ text: “Contamination +1. The reader retains one phrase they cannot stop reciting internally.”, attention: 0, contamination: 1 },
-{ text: “Attention +2. A Myrr’aurel archivist arrives at the table with polite, pointed questions.”, attention: 2, contamination: 0 },
-{ text: “No clock change. The library withholds consequence — for now. Mark this tome in the ledger.”, attention: 0, contamination: 0 },
-{ text: “Contamination +2. A false memory is planted: the reader is certain they’ve read this before.”, attention: 0, contamination: 2 },
+var consequencesAlive = [
+{ text: “Attention +1. The stacks re-index around the reader. Something has noticed.”, a: 1, c: 0 },
+{ text: “Contamination +1. Dreams recur with a new glyph.”, a: 0, c: 1 },
+{ text: “A named NPC becomes aware of the party’s inquiry within the week.”, a: 1, c: 0 },
+{ text: “Attention +1, Contamination +1. The tome reshelves itself before the session ends.”, a: 1, c: 1 },
+{ text: “Contamination +1. The reader retains one phrase they cannot stop reciting.”, a: 0, c: 1 },
+{ text: “Attention +2. A Myrr’aurel archivist arrives with polite, pointed questions.”, a: 2, c: 0 },
+{ text: “No clock change. The library withholds consequence for now.”, a: 0, c: 0 },
+{ text: “Contamination +2. A false memory is planted: the reader is certain they have read this before.”, a: 0, c: 2 }
 ];
-
-const highRiskConsequences = [
-{ text: “Attention +2. The Black Index logs the reader’s name. The shelves know what was accessed.”, attention: 2, contamination: 0 },
-{ text: “Attention +1, Contamination +2. The tome’s final page contains the reader’s name, written in their own hand.”, attention: 1, contamination: 2 },
-{ text: “Contamination +2. The language shifts mid-read. The reader understands it anyway. They cannot explain how.”, attention: 0, contamination: 2 },
-];
-
-const dmTruthTypes = [“Key”,“Lie”,“Bait”,“Prophecy”,“Trap”,“Map-Fragment”,“Cipher”,“Confession”,“Warning”,“Decoy”];
-
-const factions = [
-“Sylvanox cell”, “Vey’kar emissary”, “Silver Flame remnant”,
-“Andorian echo-warden”, “Eldraxian patron-signal”, “an unknown third party”,
-“the Archivist’s Council”, “a former party ally”, “the Bound Ones”
-];
-
-const hooks = [
-“cross-references a missing volume hidden deeper in”,
-“directly contradicts the canonical account held in”,
-“names a specific location accessible only via”,
-“contains a cipher whose key is held separately in”,
-“implies a secondary source exists somewhere within”
-];
-
-const eras = [
-“Pre-Fall Andorian”, “Early Dark Age”, “Late Andorian Decline”,
-“Post-Cataclysm Fragment”, “Disputed Interregnum”, “Third Age of the Weave”,
-“The Sundering Period”, “Restoration Era”
-];
-
-const physicalStates = [
-“intact, suspiciously pristine”,
-“worm-eaten at the margins”,
-“scorched at the edges — water-damaged within”,
-“palimpsest over older text, earlier layer still legible”,
-“stitched from mismatched quires, two different authors”,
-“annotated heavily in an unknown hand”,
-“sealed with wax that has already been broken”,
-“missing its title page, beginning at chapter two”,
-“bound in material that resists the eye’s focus”
-];
-
-// ============================
-//   GENERATOR FUNCTIONS
-// ============================
 
 function rnd(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 function roll(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
-
-function pickName(kind) {
-const s = syllables[kind];
-return rnd(s) + rnd(s).toLowerCase().replace(/^[aeiou]/, (v) => v);
-}
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2); }
 
 function shelfCode(wing, depth) {
-const w = wing.slice(0, 2).toUpperCase();
-const d = depth === “Hall” ? “H” : depth === “Vault” ? “V” : “B”;
-return `${w}-${d}-${roll(1,9)}${roll(0,9)}.${roll(1,7)}.${roll(1,12)}`;
+var w = wing.slice(0,2).toUpperCase();
+var d = depth === “Hall” ? “H” : depth === “Vault” ? “V” : “B”;
+return w + “-” + d + “-” + roll(1,9) + roll(0,9) + “.” + roll(1,7) + “.” + roll(1,12);
 }
 
-function makeTitle(topic, wing) {
-const forms = [
-`On the ${rnd(["Seventh","Black","Hidden","Elder","Broken","Forgotten"])} ${rnd(["Index","Spiral","Axiom","Archive","Canticle","Concordance"])}`,
-`The ${rnd(["Codex","Treatise","Chronicle","Manual","Testimony","Refutation"])} of ${rnd(["Root","Silence","Etherium","Ash","Echo","Dissolution"])}`,
-`${rnd(["Margins","Annotations","Fragments","Minutes","Errata","Addenda"])} from ${rnd(["Elarien","the Deep Vaults","Kyros","the Fallen Hall","the Stair of Guidance","the Unwritten Wing"])}`,
-`A ${rnd(["Catalogue","Refutation","Concordance","Litany","Survey","Reckoning"])} of ${rnd(["Names","Gates","Wounds","Threads","Rites","Omissions"])}`
-];
-
-const base = rnd(forms);
-if (topic !== “Any”) return `${base} — ${topic}`;
-
-// When topic is “Any”, pull from a random topic motif
-const randomTopic = rnd(Object.keys(topicMotifs).filter(t => t !== “Any”));
-return `${base}`;
+function makeTitle(topic) {
+var base = rnd(titleForms) + “ “ + rnd(titleSubjects);
+if (topic !== “Any”) { return base + “ — “ + topic; }
+return base;
 }
 
-function makeExcerpt(topic, risk) {
-const motifs = topicMotifs[topic] || topicMotifs[“Any”];
-const m1 = rnd(motifs);
-const m2 = rnd(motifs);
-const m3 = rnd(motifs);
-
-const openers = [
-`In the measureless interval where the Weave thins, there are signs — ${m1} — that do not belong to any honest chronology.`,
-`The ${m1} is not catalogued here by accident. Let the reader consider what was omitted from adjacent shelves.`,
-`It has been observed by no fewer than three archivists, all since retired, that the study of ${m1} produces a specific kind of forgetting.`,
-`What follows is presented as theory. That it has happened is not in dispute. That it will happen again is the purpose of this volume.`
-];
-
-const middles = [
-risk >= 4
-? “The ink is wrong — too dark, as though it remembers the hand that bled it.”
-: “The hand is practiced, the language formal, as though written for those who already know the price.”,
-risk >= 3
-? “A margin note, added later in a different ink: *Do not read this aloud in the presence of open water.*”
-: “The style is measured, academic — the kind used when the author wishes to seem unconcerned.”,
-];
-
-const closers = [
-`Let it be recorded that ${m2} is not discovered, but *answered*; and that what answers does so by means of ${m3}.`,
-`The omission of ${m2} from the official index is deliberate. This volume should not be on this shelf. Proceed accordingly.`,
-`Should the reader find that certain passages shift between readings, the archivist recommends setting the tome down and walking directly to the exit without looking at the shelves.`
-];
-
-return `${rnd(openers)} ${rnd(middles)} ${rnd(closers)}`;
+function makeExcerpt() {
+return rnd(excerptOpeners) + “ “ + rnd(excerptMiddles) + “ “ + rnd(excerptClosers);
 }
 
-function makeDmTruth(topic, wing, depth, risk, mode) {
-const truthType = rnd(dmTruthTypes);
-const faction   = rnd(factions);
-const hook      = `This tome ${rnd(hooks)} the ${depth} of the ${wing} Wing.`;
-const contradiction = risk >= 3
-? “Contradicts an established claim in the player’s notes — may be deliberate censorship, a lure, or evidence of timeline divergence.”
-: “Consistent with known fragments, but notably incomplete in a way that could be intentional.”;
-
-// Pick consequence based on mode and risk
-let consequence;
-if (mode === “alive”) {
-if (risk >= 4) {
-consequence = rnd([…consequencesAlive, …highRiskConsequences]);
-} else {
-consequence = rnd(consequencesAlive);
-}
-} else {
-if (risk >= 4) {
-consequence = rnd([…consequencesNeutral, rnd(consequencesAlive)]);
-} else {
-consequence = rnd(consequencesNeutral);
-}
-}
-
-return { truthType, faction, hook, contradiction, consequence };
+function esc(s) {
+return String(s).replace(/&/g,”&”).replace(/</g,”<”).replace(/>/g,”>”).replace(/”/g,”"”).replace(/’/g,”'”);
 }
 
 function generateTome() {
-const wing  = $(“wing”).value;
-const depth = $(“depth”).value;
-const topic = $(“topic”).value;
-const risk  = Number($(“risk”).value);
+var wing  = document.getElementById(“wing”).value;
+var depth = document.getElementById(“depth”).value;
+var topic = document.getElementById(“topic”).value;
+var risk  = Number(document.getElementById(“risk”).value);
 
-const authorKindPool = wingAuthors[wing] || [“human”,“andorian”];
-const authorKind = rnd(authorKindPool);
-const author = pickName(authorKind);
-const era = rnd(eras);
-const physical = rnd(physicalStates);
-const tags = topic === “Any”
-? [rnd(Object.keys(topicMotifs).filter(t => t !== “Any”))]
-: [topic];
+var namePool = (wing === “Forbidden”) ? uldarNames : (wing === “Planar”) ? andorianNames : humanNames;
+var author = rnd(namePool);
+var era = rnd(eras);
+var phys = rnd(physicalList);
+var tag = (topic === “Any”) ? rnd(topicList) : topic;
 
-const dm = makeDmTruth(topic, wing, depth, risk, state.mode);
+var cpool = (mode === “alive”) ? consequencesAlive : consequencesNeutral;
+var consequence = rnd(cpool);
 
-const tome = {
-id: crypto.randomUUID(),
-createdAt: new Date().toISOString(),
-wing, depth, topic, risk,
-title:    makeTitle(topic, wing),
-author,
-era,
-shelf:    shelfCode(wing, depth),
-physical,
-excerpt:  makeExcerpt(topic, risk),
-dm,
-tags
+var dm = {
+truthType: rnd(truthTypes),
+faction: rnd(factions),
+hook: “This tome “ + rnd(hooks) + “ “ + depth + “ of the “ + wing + “ Wing.”,
+note: (risk >= 3) ? “Contradicts an established claim — may be censorship or a lure.” : “Consistent with known fragments, but notably incomplete.”,
+consequence: consequence
 };
 
-state.currentTome = tome;
-renderCurrentTome();
-$(“btnSave”).disabled = false;
-$(“btnReroll”).disabled = false;
+currentTome = {
+id: uid(),
+createdAt: new Date().toISOString(),
+wing: wing, depth: depth, topic: topic, risk: risk,
+title: makeTitle(topic),
+author: author, era: era, physical: phys,
+shelf: shelfCode(wing, depth),
+excerpt: makeExcerpt(),
+dm: dm,
+tag: tag
+};
 
-// Apply consequence clocks
-if (dm.consequence.attention || dm.consequence.contamination) {
-incrementClocks(dm.consequence.attention, dm.consequence.contamination);
-}
-}
+renderTome();
+document.getElementById(“btnSave”).disabled = false;
+document.getElementById(“btnReroll”).disabled = false;
 
-// ============================
-//   CLOCKS
-// ============================
-
-const MAX_CLOCK = 6;
-
-function incrementClocks(attention, contamination) {
-const prevA = state.clocks.attention;
-const prevC = state.clocks.contamination;
-state.clocks.attention     = Math.min(MAX_CLOCK, state.clocks.attention + attention);
-state.clocks.contamination = Math.min(MAX_CLOCK, state.clocks.contamination + contamination);
+if (consequence.a || consequence.c) {
+clocks.attention = Math.min(6, clocks.attention + consequence.a);
+clocks.contamination = Math.min(6, clocks.contamination + consequence.c);
 saveClocks();
-renderClocks(prevA, prevC);
-}
-
-function resetClocks() {
-if (!confirm(“Reset Attention and Contamination clocks to zero?”)) return;
-state.clocks = { attention: 0, contamination: 0 };
-saveClocks();
-renderClocks(0, 0);
-}
-
-function renderClocks(prevA, prevC) {
-renderPips(“attentionPips”, state.clocks.attention, “attention”, prevA);
-renderPips(“contaminationPips”, state.clocks.contamination, “contamination”, prevC);
-}
-
-function renderPips(elId, value, type, prevValue) {
-const container = $(elId);
-container.innerHTML = “”;
-for (let i = 0; i < MAX_CLOCK; i++) {
-const pip = document.createElement(“div”);
-pip.className = “pip”;
-if (i < value) {
-pip.classList.add(`filled-${type}`);
-if (prevValue !== undefined && i >= prevValue) {
-pip.classList.add(“just-filled”);
-setTimeout(() => pip.classList.remove(“just-filled”), 900);
-}
-}
-container.appendChild(pip);
+renderClocks();
 }
 }
 
-// ============================
-//   RENDER
-// ============================
-
-function escapeHtml(s) {
-return String(s).replace(/[&<>”’]/g, (c) => ({
-“&”:”&”,”<”:”<”,”>”:”>”,’”’:”"”,”’”:”'”
-}[c]));
-}
-
-function renderCurrentTome() {
-const t = state.currentTome;
-const out = $(“tomeOutput”);
-
+function renderTome() {
+var t = currentTome;
 if (!t) {
-out.innerHTML = ` <div class="empty-state"> <div class="empty-glyph">⬡</div> <p>Retrieve a tome to reveal its catalog card, excerpt, and DM payload.</p> <p class="hint">The shelves are said to listen better than they see.</p> </div>`;
+document.getElementById(“tomeOutput”).innerHTML = ‘<div class="empty-state"><div class="empty-glyph">⬡</div><p>Retrieve a tome to reveal its catalog card, excerpt, and DM payload.</p><p class="hint">The shelves are said to listen better than they see.</p></div>’;
 return;
 }
-
-const riskClass  = t.risk >= 4 ? “badge-risk-high” : “”;
-const depthClass = t.depth === “Black Index” ? “badge-depth-black” : “”;
-const hasConsequence = t.dm.consequence.attention > 0 || t.dm.consequence.contamination > 0;
-
-const consequenceHtml = hasConsequence
-? `<span class="consequence-pill">⚠ ${escapeHtml(t.dm.consequence.text)}</span>`
-: `<span class="consequence-pill">✓ ${escapeHtml(t.dm.consequence.text)}</span>`;
-
-out.innerHTML = `
-<div class="card-enter">
-<div class="card-title">${escapeHtml(t.title)}</div>
-
-```
-  <div class="badges">
-    <span class="badge">${escapeHtml(t.wing)}</span>
-    <span class="badge ${depthClass}">${escapeHtml(t.depth)}</span>
-    <span class="badge ${riskClass}">Risk ${t.risk}</span>
-    <span class="badge">${escapeHtml(t.shelf)}</span>
-  </div>
-
-  <div class="section-label">Catalog Card — Player Safe</div>
-  <div class="card-meta">
-    <p><b>Author:</b> ${escapeHtml(t.author)} &nbsp;·&nbsp; <b>Era:</b> ${escapeHtml(t.era)}</p>
-    <p><b>Condition:</b> ${escapeHtml(t.physical)}</p>
-    <p><b>Tags:</b> ${t.tags.map(escapeHtml).join(", ")}</p>
-  </div>
-
-  <div class="section-label">Excerpt — Read Aloud</div>
-  <div class="excerpt">${escapeHtml(t.excerpt)}</div>
-
-  <div class="section-label">DM Payload</div>
-  <details class="dm-block">
-    <summary>▶ Reveal DM Payload</summary>
-    <div class="dm-inner">
-      <div class="dm-row"><span class="dm-key">True Nature</span><span class="dm-val">${escapeHtml(t.dm.truthType)}</span></div>
-      <div class="dm-row"><span class="dm-key">Faction Interest</span><span class="dm-val">${escapeHtml(t.dm.faction)}</span></div>
-      <div class="dm-row"><span class="dm-key">Hook</span><span class="dm-val">${escapeHtml(t.dm.hook)}</span></div>
-      <div class="dm-row"><span class="dm-key">Continuity Note</span><span class="dm-val">${escapeHtml(t.dm.contradiction)}</span></div>
-      <div class="dm-row"><span class="dm-key">Consequence</span><span class="dm-val">${consequenceHtml}</span></div>
-    </div>
-  </details>
-</div>
-```
-
-`;
+var riskClass  = (t.risk >= 4) ? “badge-risk-high” : “”;
+var depthClass = (t.depth === “Black Index”) ? “badge-depth-black” : “”;
+document.getElementById(“tomeOutput”).innerHTML =
+‘<div class="card-enter">’ +
+‘<div class="card-title">’ + esc(t.title) + ‘</div>’ +
+‘<div class="badges">’ +
+‘<span class="badge">’ + esc(t.wing) + ‘</span>’ +
+‘<span class="badge ' + depthClass + '">’ + esc(t.depth) + ‘</span>’ +
+’<span class="badge ' + riskClass + '">Risk ’ + t.risk + ‘</span>’ +
+‘<span class="badge">’ + esc(t.shelf) + ‘</span>’ +
+‘</div>’ +
+‘<div class="section-label">Catalog Card</div>’ +
+‘<div class="card-meta">’ +
+’<p><b>Author:</b> ’ + esc(t.author) + ’  ·  <b>Era:</b> ’ + esc(t.era) + ‘</p>’ +
+’<p><b>Condition:</b> ’ + esc(t.physical) + ‘</p>’ +
+’<p><b>Tags:</b> ’ + esc(t.tag) + ‘</p>’ +
+‘</div>’ +
+‘<div class="section-label">Excerpt</div>’ +
+‘<div class="excerpt">’ + esc(t.excerpt) + ‘</div>’ +
+‘<div class="section-label">DM Payload</div>’ +
+‘<details class="dm-block">’ +
+‘<summary>Reveal DM Payload</summary>’ +
+‘<div class="dm-inner">’ +
+‘<div class="dm-row"><span class="dm-key">True Nature</span><span class="dm-val">’ + esc(t.dm.truthType) + ‘</span></div>’ +
+‘<div class="dm-row"><span class="dm-key">Faction</span><span class="dm-val">’ + esc(t.dm.faction) + ‘</span></div>’ +
+‘<div class="dm-row"><span class="dm-key">Hook</span><span class="dm-val">’ + esc(t.dm.hook) + ‘</span></div>’ +
+‘<div class="dm-row"><span class="dm-key">Note</span><span class="dm-val">’ + esc(t.dm.note) + ‘</span></div>’ +
+‘<div class="dm-row"><span class="dm-key">Consequence</span><span class="dm-val">’ + esc(t.dm.consequence.text) + ‘</span></div>’ +
+‘</div>’ +
+‘</details>’ +
+‘</div>’;
 }
 
 function renderLedger() {
-const q    = ($(“search”).value || “”).toLowerCase();
-const list = state.ledger.filter(t => {
-const hay = `${t.title} ${t.author} ${t.wing} ${t.depth} ${t.era} ${t.tags.join(" ")}`.toLowerCase();
-return hay.includes(q);
+var q = (document.getElementById(“search”).value || “”).toLowerCase();
+var list = ledger.filter(function(t) {
+var hay = (t.title + “ “ + t.author + “ “ + t.wing + “ “ + t.depth + “ “ + t.tag).toLowerCase();
+return hay.indexOf(q) !== -1;
 });
-
-const el = $(“ledger”);
-
+var el = document.getElementById(“ledger”);
 if (!list.length) {
-el.innerHTML = `<div class="ledger-empty">${ state.ledger.length === 0 ? "No tomes saved yet. Retrieve and save a tome to begin your ledger." : "No results match your search." }</div>`;
+el.innerHTML = ‘<div class="ledger-empty">’ + (ledger.length === 0 ? “No tomes saved yet.” : “No results.”) + ‘</div>’;
 return;
 }
-
-el.innerHTML = list.map(t => `<div class="ledger-item"> <div class="ledger-title">${escapeHtml(t.title)}</div> <div class="ledger-meta"> ${escapeHtml(t.wing)} · ${escapeHtml(t.depth)} · Risk ${t.risk} · ${escapeHtml(t.shelf)} </div> <div class="ledger-meta"> ${escapeHtml(t.author)} · ${escapeHtml(t.era)} · ${new Date(t.createdAt).toLocaleDateString()} </div> </div>`).join(””);
+el.innerHTML = list.map(function(t) {
+return ‘<div class="ledger-item">’ +
+‘<div class="ledger-title">’ + esc(t.title) + ‘</div>’ +
+‘<div class="ledger-meta">’ + esc(t.wing) + ’ · ’ + esc(t.depth) + ’ · Risk ’ + t.risk + ’ · ’ + esc(t.shelf) + ‘</div>’ +
+‘<div class="ledger-meta">’ + esc(t.author) + ’ · ’ + esc(t.era) + ‘</div>’ +
+‘</div>’;
+}).join(””);
 }
 
-// ============================
-//   LEDGER OPERATIONS
-// ============================
+function renderClocks() {
+renderPips(“attentionPips”, clocks.attention, “attention”);
+renderPips(“contaminationPips”, clocks.contamination, “contamination”);
+}
+
+function renderPips(elId, value, type) {
+var el = document.getElementById(elId);
+if (!el) { return; }
+el.innerHTML = “”;
+for (var i = 0; i < 6; i++) {
+var pip = document.createElement(“div”);
+pip.className = (i < value) ? “pip filled-” + type : “pip”;
+el.appendChild(pip);
+}
+}
 
 function addToLedger() {
-if (!state.currentTome) return;
-// Don’t add duplicates
-if (state.ledger.some(e => e.id === state.currentTome.id)) return;
-state.ledger.unshift(state.currentTome);
+if (!currentTome) { return; }
+ledger.unshift(currentTome);
 saveLedger();
 renderLedger();
-$(“btnSave”).disabled = true;
-$(“btnSave”).textContent = “✓ Saved”;
-setTimeout(() => {
-$(“btnSave”).textContent = “Save to Ledger”;
-$(“btnSave”).disabled = false;
+document.getElementById(“btnSave”).disabled = true;
+document.getElementById(“btnSave”).textContent = “Saved!”;
+setTimeout(function() {
+document.getElementById(“btnSave”).textContent = “Save to Ledger”;
+document.getElementById(“btnSave”).disabled = false;
 }, 1500);
 }
 
 function exportLedger() {
-const blob = new Blob([JSON.stringify(state.ledger, null, 2)], { type: “application/json” });
-const url  = URL.createObjectURL(blob);
-const a    = document.createElement(“a”);
-a.href     = url;
-a.download = `myrraurel_ledger_${new Date().toISOString().slice(0,10)}.json`;
+var blob = new Blob([JSON.stringify(ledger, null, 2)], { type: “application/json” });
+var url = URL.createObjectURL(blob);
+var a = document.createElement(“a”);
+a.href = url;
+a.download = “myrraurel_ledger.json”;
 a.click();
 URL.revokeObjectURL(url);
 }
 
 function importLedger(file) {
-const reader = new FileReader();
-reader.onload = () => {
+var reader = new FileReader();
+reader.onload = function() {
 try {
-const data = JSON.parse(reader.result);
-if (!Array.isArray(data)) throw new Error(“Invalid ledger file.”);
-state.ledger = data;
+var data = JSON.parse(reader.result);
+if (!Array.isArray(data)) { throw new Error(“Invalid file.”); }
+ledger = data;
 saveLedger();
 renderLedger();
-} catch (e) {
-alert(“Import failed: “ + e.message);
-}
+} catch(e) { alert(“Import failed: “ + e.message); }
 };
 reader.readAsText(file);
 }
 
-function clearLedger() {
-if (!confirm(“Clear the local ledger on this device? This cannot be undone.”)) return;
-state.ledger = [];
-saveLedger();
-renderLedger();
-}
-
-// ============================
-//   MODE TOGGLE
-// ============================
-
-function setMode(mode) {
-state.mode = mode;
-if (mode === “alive”) {
-$(“modeNeutral”).classList.remove(“active”);
-$(“modeAlive”).classList.add(“active”);
-$(“modeDesc”).textContent = “Every pull can increment Attention & Contamination clocks.”;
+function setMode(m) {
+mode = m;
+if (m === “alive”) {
+document.getElementById(“modeNeutral”).classList.remove(“active”);
+document.getElementById(“modeAlive”).classList.add(“active”);
+document.getElementById(“modeDesc”).textContent = “Every pull can increment Attention & Contamination clocks.”;
 document.body.classList.add(“mode-alive”);
 } else {
-$(“modeAlive”).classList.remove(“active”);
-$(“modeNeutral”).classList.add(“active”);
-$(“modeDesc”).textContent = “Danger only in Forbidden wing & Black Index depths.”;
+document.getElementById(“modeAlive”).classList.remove(“active”);
+document.getElementById(“modeNeutral”).classList.add(“active”);
+document.getElementById(“modeDesc”).textContent = “Danger only in Forbidden wing & Black Index depths.”;
 document.body.classList.remove(“mode-alive”);
 }
 }
 
-// ============================
-//   WIRE UP EVENTS
-// ============================
-
-$(“risk”).addEventListener(“input”, () => {
-const v = $(“risk”).value;
-$(“riskVal”).textContent = v;
+document.getElementById(“risk”).addEventListener(“input”, function() {
+document.getElementById(“riskVal”).textContent = this.value;
 });
-
-$(“btnPull”).addEventListener(“click”, generateTome);
-$(“btnReroll”).addEventListener(“click”, generateTome);
-$(“btnSave”).addEventListener(“click”, addToLedger);
-$(“btnExport”).addEventListener(“click”, exportLedger);
-$(“btnClear”).addEventListener(“click”, clearLedger);
-$(“btnResetClocks”).addEventListener(“click”, resetClocks);
-$(“importFile”).addEventListener(“change”, (e) => {
-if (e.target.files && e.target.files[0]) importLedger(e.target.files[0]);
+document.getElementById(“btnPull”).addEventListener(“click”, generateTome);
+document.getElementById(“btnReroll”).addEventListener(“click”, generateTome);
+document.getElementById(“btnSave”).addEventListener(“click”, addToLedger);
+document.getElementById(“btnExport”).addEventListener(“click”, exportLedger);
+document.getElementById(“btnClear”).addEventListener(“click”, function() {
+if (!confirm(“Clear ledger?”)) { return; }
+ledger = [];
+saveLedger();
+renderLedger();
 });
-$(“search”).addEventListener(“input”, renderLedger);
-$(“modeNeutral”).addEventListener(“click”, () => setMode(“neutral”));
-$(“modeAlive”).addEventListener(“click”,   () => setMode(“alive”));
+document.getElementById(“btnResetClocks”).addEventListener(“click”, function() {
+if (!confirm(“Reset clocks?”)) { return; }
+clocks = { attention: 0, contamination: 0 };
+saveClocks();
+renderClocks();
+});
+document.getElementById(“importFile”).addEventListener(“change”, function(e) {
+if (e.target.files && e.target.files[0]) { importLedger(e.target.files[0]); }
+});
+document.getElementById(“search”).addEventListener(“input”, renderLedger);
+document.getElementById(“modeNeutral”).addEventListener(“click”, function() { setMode(“neutral”); });
+document.getElementById(“modeAlive”).addEventListener(“click”, function() { setMode(“alive”); });
 
-// ============================
-//   INITIAL RENDER
-// ============================
-renderCurrentTome();
+renderTome();
 renderLedger();
 renderClocks();
