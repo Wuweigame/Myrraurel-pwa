@@ -239,7 +239,7 @@ const tags = topic === “Any”
 const dm = makeDmTruth(topic, wing, depth, risk, state.mode);
 
 const tome = {
-id: crypto.randomUUID(),
+id: Date.now() + Math.random().toString(36,
 createdAt: new Date().toISOString(),
 wing, depth, topic, risk,
 title:    makeTitle(topic, wing),
