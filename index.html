@@ -1,0 +1,167 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Myrr'aurel — Tome Generator</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <meta name="theme-color" content="#08070a" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Myrr'aurel">
+</head>
+<body>
+
+  <div class="scanlines"></div>
+  <div class="vignette"></div>
+
+  <header>
+    <div class="header-inner">
+      <div class="glyph-mark">⬡</div>
+      <div class="header-text">
+        <h1>Myrr'aurel</h1>
+        <p class="sub">The Living Archive — Tome Generator & Ledger</p>
+      </div>
+      <div class="clocks-bar">
+        <div class="clock-group">
+          <span class="clock-label">Attention</span>
+          <div class="pips" id="attentionPips"></div>
+        </div>
+        <div class="clock-group">
+          <span class="clock-label">Contamination</span>
+          <div class="pips" id="contaminationPips"></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="grid">
+
+```
+<!-- COLUMN 1: Controls -->
+<section class="panel panel-controls">
+  <h2 class="panel-title"><span class="panel-rune">I</span> Retrieve Tome</h2>
+
+  <div class="field">
+    <label>Wing</label>
+    <div class="select-wrap">
+      <select id="wing">
+        <option value="Arcane">Arcane</option>
+        <option value="Planar">Planar & Cosmic</option>
+        <option value="Forbidden">Forbidden</option>
+        <option value="Bestiary">Bestiary</option>
+        <option value="Liturgies">Liturgies</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Depth</label>
+    <div class="select-wrap">
+      <select id="depth">
+        <option value="Hall">Hall</option>
+        <option value="Vault">Vault</option>
+        <option value="Black Index">Black Index</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Risk <span id="riskVal" class="risk-val">2</span></label>
+    <div class="range-track">
+      <input id="risk" type="range" min="0" max="5" value="2" />
+      <div class="range-fill" id="rangeFill"></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Topic</label>
+    <div class="select-wrap">
+      <select id="topic">
+        <option value="Any">Any</option>
+        <option value="Eldraxis">Eldraxis</option>
+        <option value="Weave Theory">Weave Theory</option>
+        <option value="Heartwood">Heartwood</option>
+        <option value="Life Stones">Life Stones</option>
+        <option value="Vey'kar">Vey'kar</option>
+        <option value="Silver Flame">Silver Flame</option>
+        <option value="Kyros">Kyros</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="mode-toggle">
+    <span class="mode-label">Library Mode:</span>
+    <div class="toggle-group">
+      <button class="toggle-btn active" id="modeNeutral">Neutral Archive</button>
+      <button class="toggle-btn" id="modeAlive">Living Archive</button>
+    </div>
+    <p class="mode-desc" id="modeDesc">Danger only in Forbidden wing & Black Index depths.</p>
+  </div>
+
+  <div class="actions">
+    <button class="btn btn-primary" id="btnPull">
+      <span class="btn-rune">✦</span> Retrieve Tome
+    </button>
+    <button class="btn btn-secondary" id="btnReroll" disabled>Reroll</button>
+    <button class="btn btn-accent" id="btnSave" disabled>Save to Ledger</button>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="actions actions-util">
+    <button class="btn btn-util" id="btnExport">Export Ledger</button>
+    <label class="btn btn-util fileBtn">
+      Import Ledger
+      <input id="importFile" type="file" accept="application/json" />
+    </label>
+    <button class="btn btn-util btn-danger" id="btnClear">Clear Ledger</button>
+  </div>
+
+  <div class="clock-controls">
+    <button class="btn btn-util btn-clock" id="btnResetClocks">Reset Clocks</button>
+    <span class="hint">Clocks persist across sessions.</span>
+  </div>
+
+  <p class="install-hint">
+    📱 iPad: Safari → Share → <em>Add to Home Screen</em>
+  </p>
+</section>
+
+<!-- COLUMN 2: Current Tome -->
+<section class="panel panel-tome">
+  <h2 class="panel-title"><span class="panel-rune">II</span> Current Tome</h2>
+  <div id="tomeOutput" class="output empty">
+    <div class="empty-state">
+      <div class="empty-glyph">⬡</div>
+      <p>Retrieve a tome to reveal its catalog card, excerpt, and DM payload.</p>
+      <p class="hint">The shelves are said to listen better than they see.</p>
+    </div>
+  </div>
+</section>
+
+<!-- COLUMN 3: Ledger -->
+<section class="panel panel-ledger">
+  <h2 class="panel-title"><span class="panel-rune">III</span> Ledger</h2>
+  <div class="field">
+    <input id="search" type="text" placeholder="Search title, author, wing, tags…" class="search-input" />
+  </div>
+  <div id="ledger" class="ledger"></div>
+</section>
+```
+
+  </main>
+
+  <footer>
+    <small>Myrr'aurel PWA &mdash; Ledger stored locally on your device &mdash; Works offline</small>
+  </footer>
+
+  <script src="app.js"></script>
+
+</body>
+</html>
