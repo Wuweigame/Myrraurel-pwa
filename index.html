@@ -18,7 +18,7 @@ h1{font-family:'Cinzel',serif;font-size:1.4rem;letter-spacing:3px;color:var(--ac
 .clock-group{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
 .clock-label{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
 .pips{display:flex;gap:4px}
-.pip{width:10px;height:10px;border-radius:50%;border:1px solid var(--border);background:transparent}
+.pip{width:10px;height:10px;border-radius:50%;border:1px solid var(--border);background:transparent;transition:background .3s}
 .pip.fa{background:var(--accent);border-color:var(--accent)}
 .pip.fc{background:var(--alive);border-color:var(--alive)}
 main{max-width:1400px;margin:0 auto;display:grid;gap:12px;padding:16px;grid-template-columns:1fr}
@@ -37,11 +37,15 @@ select,.search-input{width:100%;padding:8px 10px;background:#0d0c11;border:1px s
 .btn-sm{font-size:.55rem;padding:6px 10px}
 .divider{border-top:1px solid var(--border);margin:12px 0}
 .mode-box{background:#0d0c11;border:1px solid var(--border);border-radius:8px;padding:10px;margin-bottom:12px}
-.mode-box .mode-label{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:8px}
+.mode-label{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:8px}
 .toggle-group{display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:6px}
 .tbtn{flex:1;padding:7px 4px;border:none;background:transparent;color:var(--muted);font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:1px;text-transform:uppercase;cursor:pointer}
 .tbtn.active{background:var(--accent2);color:var(--bg)}
 .mode-desc{font-size:.78rem;color:var(--muted);font-style:italic}
+.style-box{background:#0d0c11;border:1px solid var(--border);border-radius:8px;padding:10px;margin-bottom:12px}
+.style-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px}
+.sbtn{padding:6px 8px;border:1px solid var(--border);border-radius:6px;background:transparent;color:var(--muted);font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:1px;text-transform:uppercase;cursor:pointer;text-align:center}
+.sbtn.active{border-color:var(--accent2);color:var(--accent);background:#1a1608}
 .hint{font-size:.78rem;color:var(--muted);font-style:italic}
 .install-hint{font-size:.78rem;color:var(--muted);margin-top:12px;padding:8px;border:1px dashed var(--border);border-radius:8px;line-height:1.5}
 .install-hint em{color:var(--accent);font-style:normal}
@@ -56,9 +60,12 @@ select,.search-input{width:100%;padding:8px 10px;background:#0d0c11;border:1px s
 .slabel::after{content:'';flex:1;height:1px;background:var(--border)}
 .card-meta p{font-size:.9rem;color:#a89f8a;line-height:1.5;margin-bottom:3px}
 .card-meta b{color:var(--text);font-weight:400}
-.excerpt{font-style:italic;color:var(--text);line-height:1.8;font-size:.97rem;padding:14px;background:#0d0c11;border-left:2px solid var(--accent2);border-radius:0 8px 8px 0}
-.excerpt p{margin-bottom:10px}
+.excerpt{font-style:italic;color:var(--text);line-height:1.85;font-size:.97rem;padding:14px;background:#0d0c11;border-left:2px solid var(--accent2);border-radius:0 8px 8px 0}
+.excerpt p{margin-bottom:12px}
 .excerpt p:last-child{margin-bottom:0}
+.excerpt.style-ominous{border-left-color:var(--danger);font-size:1.02rem;line-height:1.7}
+.excerpt.style-fragmented{font-size:.92rem;line-height:2;letter-spacing:.3px}
+.excerpt.style-firsthand{border-left-color:var(--green);font-style:normal;font-size:.95rem}
 .marginalia{font-size:.82rem;color:var(--muted);font-style:normal;margin-top:10px;padding:8px 10px;border:1px dashed var(--border);border-radius:6px;line-height:1.6}
 .marginalia b{color:#a89f8a;font-weight:400}
 details{margin-top:10px;border:1px solid var(--border);border-radius:8px;overflow:hidden}
@@ -66,13 +73,15 @@ summary{cursor:pointer;font-family:'Cinzel',serif;font-size:.6rem;letter-spacing
 .dm-inner{padding:12px;background:#0a0910}
 .dm-row{display:grid;grid-template-columns:110px 1fr;gap:8px;margin-bottom:8px;font-size:.88rem;line-height:1.6}
 .dm-key{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding-top:2px}
-.lore-block{margin-top:10px;padding:12px;background:#0a0910;border:1px solid var(--border);border-radius:8px;font-size:.92rem;line-height:1.8;color:#c8c0b0}
-.lore-block p{margin-bottom:10px}
-.lore-block p:last-child{margin-bottom:0}
 .ledger-list{display:grid;gap:8px;max-height:55vh;overflow-y:auto}
-.li{background:#0d0c11;border:1px solid var(--border);border-radius:8px;padding:10px 12px}
+.li{background:#0d0c11;border:1px solid var(--border);border-radius:8px;padding:10px 12px;cursor:pointer;transition:border-color .2s}
+.li:hover{border-color:var(--border2,#3d3650)}
 .li-title{font-family:'Cinzel',serif;font-size:.75rem;color:var(--accent);margin-bottom:4px;line-height:1.3}
 .li-meta{font-size:.78rem;color:var(--muted);line-height:1.5}
+.li-expanded{margin-top:10px;padding-top:10px;border-top:1px solid var(--border);display:none}
+.li-expanded.open{display:block}
+.li-excerpt{font-style:italic;font-size:.85rem;color:var(--text);line-height:1.7;margin-bottom:8px}
+.li-excerpt p{margin-bottom:8px}
 .ledger-empty{color:var(--muted);font-style:italic;text-align:center;padding:20px;font-size:.9rem}
 footer{border-top:1px solid var(--border);padding:12px 20px;text-align:center;color:var(--muted);font-size:.72rem}
 .risk-val{color:var(--accent);font-family:'Cinzel',serif;margin-left:4px}
@@ -83,7 +92,7 @@ footer{border-top:1px solid var(--border);padding:12px 20px;text-align:center;co
 <header>
   <div>
     <h1>Myrr'aurel</h1>
-    <p class="sub">The Living Archive</p>
+    <p class="sub">The Living Archive — Infinite Wisdom</p>
   </div>
   <div class="clocks-bar">
     <div class="clock-group">
@@ -128,37 +137,52 @@ footer{border-top:1px solid var(--border);padding:12px 20px;text-align:center;co
         <option value="Any">Any</option>
         <option value="Eldraxis">Eldraxis</option>
         <option value="Weave Theory">Weave Theory</option>
-        <option value="Heartwood">Heartwood</option>
-        <option value="Life Stones">Life Stones</option>
-        <option value="Vey'kar">Vey'kar</option>
-        <option value="Silver Flame">Silver Flame</option>
-        <option value="Kyros">Kyros</option>
+        <option value="Heartwood">Heartwood &amp; Elarien</option>
+        <option value="Life Stones">Life Stones &amp; Etherium</option>
+        <option value="Andorians">The Andorians</option>
+        <option value="Mavashik">Mavashik &amp; Kyros</option>
+        <option value="Silver Flame">The Silver Flame</option>
       </select>
     </div>
-    <div class="mode-box">
-      <span class="mode-label">Library Mode</span>
-      <div class="toggle-group">
-        <button class="tbtn active" id="modeNeutral">Neutral Archive</button>
-        <button class="tbtn" id="modeAlive">Living Archive</button>
-      </div>
-      <p class="mode-desc" id="modeDesc">Danger only in Forbidden wing &amp; Black Index.</p>
-    </div>
-    <div class="actions">
-      <button class="btn btn-primary" id="btnPull">&#10022; Retrieve Tome</button>
-      <button class="btn btn-sm" id="btnReroll" disabled>Reroll</button>
-      <button class="btn btn-accent btn-sm" id="btnSave" disabled>Save to Ledger</button>
-    </div>
-    <div class="divider"></div>
-    <div class="actions">
-      <button class="btn btn-sm" id="btnExport">Export</button>
-      <label class="btn btn-sm" style="cursor:pointer">Import<input id="importFile" type="file" accept="application/json" style="display:none"/></label>
-      <button class="btn btn-sm btn-danger" id="btnClear">Clear Ledger</button>
-    </div>
-    <div class="clock-controls">
-      <button class="btn btn-sm" id="btnResetClocks">Reset Clocks</button>
-      <span class="hint">Clocks persist across sessions.</span>
-    </div>
-    <p class="install-hint">iPad: Safari &#8594; Share &#8594; <em>Add to Home Screen</em></p>
+
+```
+<div class="style-box">
+  <span class="mode-label">Writing Style</span>
+  <div class="style-grid">
+    <button class="sbtn active" id="styleAcademic">Academic</button>
+    <button class="sbtn" id="styleOminous">Ominous</button>
+    <button class="sbtn" id="styleFragmented">Fragmented</button>
+    <button class="sbtn" id="styleFirsthand">Firsthand</button>
+  </div>
+</div>
+
+<div class="mode-box">
+  <span class="mode-label">Library Mode</span>
+  <div class="toggle-group">
+    <button class="tbtn active" id="modeNeutral">Neutral Archive</button>
+    <button class="tbtn" id="modeAlive">Living Archive</button>
+  </div>
+  <p class="mode-desc" id="modeDesc">Danger only in Forbidden wing &amp; Black Index.</p>
+</div>
+
+<div class="actions">
+  <button class="btn btn-primary" id="btnPull">&#10022; Retrieve Tome</button>
+  <button class="btn btn-sm" id="btnReroll" disabled>Reroll</button>
+  <button class="btn btn-accent btn-sm" id="btnSave" disabled>Save to Ledger</button>
+</div>
+<div class="divider"></div>
+<div class="actions">
+  <button class="btn btn-sm" id="btnExport">Export</button>
+  <label class="btn btn-sm" style="cursor:pointer">Import<input id="importFile" type="file" accept="application/json" style="display:none"/></label>
+  <button class="btn btn-sm btn-danger" id="btnClear">Clear Ledger</button>
+</div>
+<div class="clock-controls">
+  <button class="btn btn-sm" id="btnResetClocks">Reset Clocks</button>
+  <span class="hint">Clocks persist across sessions.</span>
+</div>
+<p class="install-hint">iPad: Safari &#8594; Share &#8594; <em>Add to Home Screen</em></p>
+```
+
   </div>
 
   <div class="panel">
@@ -167,7 +191,7 @@ footer{border-top:1px solid var(--border);padding:12px 20px;text-align:center;co
       <div class="empty-state">
         <div class="empty-glyph">&#x2B21;</div>
         <p>Retrieve a tome to reveal its catalog card, excerpt, and DM payload.</p>
-        <p class="hint">The shelves are said to listen better than they see.</p>
+        <p class="hint">No one has ever reached its true depths. Some knowledge within was never meant to be found.</p>
       </div>
     </div>
   </div>
@@ -175,13 +199,13 @@ footer{border-top:1px solid var(--border);padding:12px 20px;text-align:center;co
   <div class="panel">
     <div class="panel-title">III — Ledger</div>
     <div class="field">
-      <input id="search" type="text" placeholder="Search title, author, wing..." class="search-input"/>
+      <input id="search" type="text" placeholder="Search title, author, wing, topic..." class="search-input"/>
     </div>
     <div class="ledger-list" id="ledger"></div>
   </div>
 </main>
 
-<footer><small>Myrr'aurel &mdash; Ledger stored locally on your device</small></footer>
+<footer><small>Myrr'aurel — "Infinite Wisdom" in Andorian — Ledger stored locally on your device</small></footer>
 
 <script>
 var SK = "myrraurel_ledger_v1";
@@ -190,299 +214,479 @@ var currentTome = null;
 var ledger = [];
 var clocks = {attention:0,contamination:0};
 var mode = "neutral";
+var style = "academic";
 
 try { ledger = JSON.parse(localStorage.getItem(SK)) || []; } catch(e) { ledger = []; }
 try { clocks = JSON.parse(localStorage.getItem(CK)) || {attention:0,contamination:0}; } catch(e) { clocks = {attention:0,contamination:0}; }
 
-var humanNames = ["Alvor Dun","Bercan Mael","Cordun Syl","Elmar Torys","Maren Valdis","Renys Aleth","Syltor Kyne","Torvald Esh","Valken Dur","Kyren Sol","Duneld Mar","Vorath Sel"];
-var andorianNames = ["Vaelith Isorn","Isvoren Thal","Thaleth Caer","Aethwyn Sil","Silvor Nael","Kharen Vael","Lythan Quan","Eiravael Thyr","Zanareth Sel","Caerwynn Aeth"];
-var uldarNames = ["Zaelgryss","Drahval the Unbound","Valshyr of No House","Zahrgrynn","Thaenkaal","Lysnythyr","Vosk Drael","Gryssael","Nythyr the Last"];
+// ── NAMES ──────────────────────────────────────────────────────────────────
+var humanNames = ["Aldric Vayne","Maren Solt","Brennan Duskwell","Liora Thatch","Corvin Aldenmoor","Seren Ashveil","Davan Rul","Tamsin Elore","Pethro Cain","Vesna Coldbrook"];
+var andorianNames = ["Caerwynn Aeth","Vaelith Isorn","Aethwyn Silnor","Thaleth of the Third Accord","Isvoren Caer","Silvor Nael","Eiravael the Younger","Zanareth Sel","Lythan Quan","Vorequan Thal"];
+var uldarNames = ["Zaelgryss","Drahval the Unbound","Valshyr of No House","Zahrgrynn","Thaenkaal","Lysnythyr","Vosk Drael","Gryssael the Last"];
+var modronNames = ["Modron-Archivist Seven","Tertius Cataloguer","the Ninth Retrieving Modron","Quattuor Index-Keeper","a Librarium Modron whose designation has been scratched out"];
 
-var eras = ["Pre-Fall Andorian","Early Dark Age","Late Andorian Decline","Post-Cataclysm Fragment","Disputed Interregnum","Third Age of the Weave","The Sundering Period","Restoration Era","Age of the Silver Accord"];
+// ── ERAS ───────────────────────────────────────────────────────────────────
+var eras = ["Pre-Kyros Andorian","The Age of Expansion","During the Mavashik Conflict","Late Silver Flame Period","Post-Accord Reconstruction","Early Dispersal Era","Age of the Life Stones","The Long Silence After","Unknown — undatable by conventional means"];
+
+// ── PHYSICAL ──────────────────────────────────────────────────────────────
 var physList = [
-  "intact, suspiciously pristine — no dust, no foxing, as though shelved yesterday",
-  "worm-eaten at the margins, core text preserved",
+  "intact and suspiciously pristine — no dust, no wear, as though shelved yesterday",
+  "worm-eaten at the margins, core text fully preserved",
   "scorched at the edges, water-damaged within — the ink has run but remains legible",
-  "palimpsest over older text; the earlier layer surfaces in oblique light",
-  "stitched from mismatched quires — at least two authors, possibly three",
-  "annotated heavily in three different hands, none identified",
-  "missing its title page and first chapter, beginning abruptly mid-argument",
-  "sealed with wax already broken — the seal bears no recognizable mark",
-  "pages reversed and rebound — the 'end' is the original beginning",
-  "written on material that is not quite paper and does not quite burn"
+  "palimpsest over older text; the earlier layer surfaces under oblique light and says something different",
+  "stitched from mismatched quires — at least two authors, possibly three, none identified",
+  "annotated in four different hands across the margins, none of them named",
+  "missing its title page and opening chapter, beginning abruptly mid-argument",
+  "sealed with wax already broken — the seal bears no mark from any known house or order",
+  "written on material that is not quite paper and does not quite burn",
+  "bound in something that was once alive and may, in some sense, still be"
 ];
 
-var titlePrefix = [
-  "On the","The","A Catalogue of","Fragments Concerning","Annotations on","A Refutation of","Testimony Regarding","The Hidden","An Index of","Marginalia from","A Concordance of","The Suppressed"
-];
-var titleCore = [
-  "Black Indices of the Seventh Accord","Codex of Root and Silence","Chronicle of the Unmaking","Elarien Fragments","Doctrine of Woven Silences","Omission Protocols","Named Wounds and Their Archivists","Dissolution of the Etherium Lattice","Testimony from Below the Hall","Forbidden Crossreferences","Ash Canon","Echo-Cities and Their Inhabitants","Stair of Guidance Correspondence","Sundering Papers","Marginal Heresies of the Restoration"
-];
-var titleSuffix = ["","","",": A Partial Recovery",": With Annotations",": Volume the Second","— Recovered","— Suppressed Edition","— Fragment Only","(Incomplete)"];
-
-var topicExcerpts = {
-  "Eldraxis": [
-    ["The entity designated Eldraxis in the Andorian indices does not appear in any record predating the Sundering. This is not because it did not exist. It is because those who named it did not survive to file the paperwork.","The hunger it represents is not metaphorical. Scholars who have studied the primary accounts at length report a consistent secondary symptom: they stop being able to remember the faces of people they love. The faces are still there. The recognition is what goes.","One archivist — the name has been excised from the master index, but the handwriting appears in seventeen other documents — wrote in the margin of her final report: 'It does not want to unmake the world. It wants the world to want to be unmade. There is a difference and the difference is everything.'"],
-    ["The black spiral appears in artwork predating written language on four separate continents. No trade route connects them. No migration pattern explains the consistency. The archivists of the Forbidden Wing have three competing theories. All three are classified.","What is known: prolonged study of Eldraxis-adjacent material produces cognitive changes that are subtle, progressive, and irreversible past a certain threshold. The threshold is not documented. The reason it is not documented is instructive.","Cross-reference with the Vey'kar dossiers suggests the Bound Ones were originally convened to contain something. The records do not specify what. Several scholars believe this omission is itself the answer."]
-  ],
-  "Weave Theory": [
-    ["The Weave is not a metaphor. It is not a convenient abstraction for magical force. It is a structure, and structures have load-bearing elements, and some of those elements are currently missing.","The seventh harmonic — which appears in Andorian texts as a theoretical impossibility — has been empirically observed three times in the last century. Twice the observer survived. The third case is the subject of a separate volume in the Vault, accessible by petition only.","What the early theorists called 'resonance' we now understand to be the Weave registering the presence of something that should not be there. Every working spell is a question. The Weave's answer, in those cases, was a question of its own."],
-    ["There is a geometry to the Weave that does not correspond to the geometry of the physical world. This is not a flaw. It is, several researchers now believe, the entire point.","The anchors described in Caerwynn Aeth's foundational text are not fixed. They migrate. The rate of migration has increased measurably over the past forty years. No one who has published on this topic has subsequently renewed their research license.","Invariant structures within the Weave — the elements that should not change under any circumstances — are changing. The current rate suggests a complete restructuring within three generations. The margin notes on this document read: 'This is optimistic.'"]
-  ],
-  "Heartwood": [
-    ["The Heartwood does not record events the way archives do. It records them the way a body records injury — as scar tissue, as changed growth, as memory encoded in the wood itself.","The root-archives predate the Andorian civilization by an order of magnitude. The scholars who first translated the sap-texts did not understand what they were reading. The scholars who came after them understood and wished they did not.","Dream-boughs are not a metaphor used by Heartwood scholars. They are a navigational feature. The forest has an interior that does not correspond to its exterior dimensions. Several expeditions have entered and not returned. Several others have returned changed in ways they cannot articulate."],
-    ["Living strata in the oldest growth contain what can only be described as arguments — disputes between root systems that span centuries, pressed into the wood like insects in amber.","The buried pulse — the rhythmic sub-harmonic that Heartwood scholars spend years learning to perceive — is not biological. It is not geological. The leading theory, heavily contested, is that it is deliberate.","There is a name in the oldest rings that appears nowhere in any other record. The name is not in any language that predates the rings themselves. Several scholars have attempted to pronounce it aloud. The attempts are not recorded, but the outcomes are noted in adjacent files."]
-  ],
-  "Life Stones": [
-    ["The Etherium lattice is not a power source in the way that coal or water is a power source. It is more accurate to say that it is a loan. The terms of the loan are not documented anywhere that has been made available to this archive.","The six fixtures of the original circuit are accounted for. The seventh — the missing fixture, referenced obliquely in no fewer than thirty recovered texts — is not missing. It was removed. By whom and to what end is the subject of active, classified research.","Centuries of recharge data suggest that the Life Stones are not recharging. They are being replenished from an external source. Identifying that source is considered a priority by at least three separate organizations, none of which are sharing their findings."],
-    ["The planet-key designation applied to certain Life Stone configurations is not metaphorical. The mechanism it describes is literal. The archivists who first confirmed this took a collective oath of silence. Several subsequently broke it. Their accounts are held in the Black Index.","What Kyros did to its Life Stone network during the Sundering is documented in excruciating technical detail in the Vault. The documentation was compiled by someone who witnessed it. The witness is described only as 'a party who could not be named for their own protection.'","The sleeping light referenced in secondary accounts is not a poetic term for a depleted stone. It is a specific observed phenomenon. What it signifies is disputed. That it signifies something is not."]
-  ],
-  "Vey'kar": [
-    ["The Vey'kar do not worship their blades. This is a common misunderstanding. The blades are the record. The Vey'kar are the keepers of a debt that predates their civilization, and the blades are how they remember what is owed and to whom.","Shadow-forged vows are not magical contracts in the conventional sense. They are wounds that have been formalized. The binding is not in the words — it is in what was surrendered to speak them.","The half-freed souls in Vey'kar custody are not prisoners. They made an agreement. The agreement, as best archival translation can reconstruct it, was voluntary. What they agreed to is the part that fills three volumes in the Forbidden Wing."],
-    ["Cold devotion is the Vey'kar term for a specific emotional state that has no equivalent in any other culture's vocabulary. The closest translation is 'the love that survives proof that it should not.' The archivists who study Vey'kar culture consider this their most important concept.","The betrayal-glyphs carved into Vey'kar architecture are not decorative. They are a list. The list is of people who were trusted. The addition of a name to the list is not a punishment — it is, by Vey'kar reckoning, a final act of acknowledgment.","What the Bound Name refers to is the subject of genuine scholarly dispute. The minority position — that there is a single name that, if spoken correctly in the right context, would dissolve all Vey'kar oaths simultaneously — is classified as a security concern by the Archivist's Council."]
-  ],
-  "Silver Flame": [
-    ["The Silver Flame as a historical force is distinct from the Silver Flame as a theological concept, though the archive officially declines to adjudicate between them. What is documented is the practical record: what the coalition did, in what order, and what it cost.","The sacrificial calculus that governed Flame decision-making during the Banishment Wars is preserved in full in the Vault. Reading it is not prohibited. Understanding it — truly understanding it — is described by those who have done so as a permanent alteration in how they perceive moral reasoning.","The saints of ash are not a metaphor for martyrdom. They are a specific category of documented case in which a Flame practitioner's final act restructured the local Weave in a measurable and permanent way. There are fourteen confirmed cases. There may be more that were not witnessed."],
-    ["The warding geometry used in the final Accord ceremonies has not been successfully replicated since. Several attempts have produced partial results. One attempt produced something else entirely. The documentation of that attempt is held in the Black Index and requires dual authorization to access.","The Last Accord was not a peace treaty. This is the most important misunderstanding in popular historical record. It was a containment agreement. What it contains, and whether it is still containing it, is the question that the Forbidden Wing's entire Silver Flame collection exists to answer.","Coalition oaths taken under the Flame protocol are still active. The parties to them are not all still living. What this means for the binding is a legal and metaphysical question that the archive has been asked to weigh in on and has, officially, declined."]
-  ],
-  "Kyros": [
-    ["Kyros was not lost. This is the first correction any serious scholar of the subject must internalize. Kyros was placed. The distinction matters because things that are lost can be found by accident. Things that are placed can only be found by someone who knows where to look — and someone always knows.","The void frost that characterizes Kyros-adjacent phenomena is not a temperature effect. Instruments that measure cold do not register it. Instruments that measure the absence of something register it very clearly. What is absent in the vicinity of Kyros material is the subject of ongoing debate.","The false voices reported by early contact expeditions were initially dismissed as psychological effects of isolation. They were subsequently confirmed as a distinct phenomenon by researchers who had not been informed of the earlier reports. The confirmation is considered one of the more unsettling moments in recent archival history."],
-    ["Kyros mined its Etherium network past the point of sustainable extraction. This is documented. What is less documented is why — the official record lists 'emergency energy requirements' without specifying the emergency. The Black Index version of this document is seventeen pages longer than the public version.","The sealed hunger is the term used in three separate cultural traditions, none of which had contact with each other, to describe what Kyros became after the Sundering. The convergence is noted without explanation in the master index. The explanation, several archivists believe, would require reopening questions that were deliberately closed.","The Warden's scar — the spatial anomaly that marks Kyros's former orbital position — is still there. It is not healing. The rate at which it is not healing has recently changed. The implications of this change are the subject of a document that was submitted to the Archivist's Council and returned unread."]
-  ],
-  "Any": [
-    ["The catalogue lies in this section are not errors. Several have been confirmed as deliberate. The question of who introduced them, and when, and whether they are still being introduced, is the animating concern of the archive's internal review process — a process that has been ongoing for eleven years without conclusion.","Unnamed witnesses appear in the margins of fourteen documents across six wings. The handwriting is consistent. The witness has never been identified. The observations attributed to them have, in every verifiable case, proven accurate.","The gap between chapters in this volume is not a binding error. The missing pages were removed before the tome entered the collection. The removal was noted at intake and flagged for investigation. The investigation file cannot currently be located."],
-    ["What the index omits is sometimes more informative than what it includes. This document's entry in the master catalogue describes it as 'a minor administrative record of limited scholarly interest.' The description was written by someone who had not read it.","Marginal warnings in pre-Sundering documents tend to be understated by the conventions of the era. A note reading 'consult with caution' translates more accurately to 'this information has consequences.' A note reading 'restricted access recommended' translates to something the archive prefers not to put in writing.","Cross-references in this document lead, through four intermediate steps, to a volume that does not officially exist. The volume exists. The archivist who confirmed its existence subsequently requested reassignment to a different institution. The request was denied."]
-  ]
+// ── TITLES ────────────────────────────────────────────────────────────────
+var titlePrefix = ["On the","The","A Catalogue of","Fragments Concerning","Recovered Annotations on","A Suppressed Refutation of","Testimony Regarding","An Index of","Marginalia from","A Concordance of","The Hidden","The Disputed"];
+var titleCore = {
+  "Eldraxis":    ["Nature of the Pre-Existence","Consciousness and the Void Beyond Form","Eldraxian Phenomena and Their Archivists","Dark Energy and the Weave's Boundary","What Returns When a Universe Dies","The Foundational Silence","Voidspire Cartography — Partial Recovery"],
+  "Weave Theory":["Seventh Harmonic Observations","Lattice Failures of the Third Age","Weave Anchor Migration — Classified Supplement","Invariant Structures and Their Violations","Methods of Direct Weave Manipulation","On the Energy Beneath the Energy","Stability Projections — Restricted"],
+  "Heartwood":   ["Elarien Root-Archive","Ley Line Conduit Function of the Heartwood","The Great Spellplague and Its Arboreal Casualties","Residual Magic of Dead Trees","Sorrow of the Druids — A Field Report","What the Stump Remembers","Dream-Paths Through the Living Wood"],
+  "Life Stones": ["Etherium Extraction and Its Limits","Life Stone Dispersal Following the Accord","Celestial Sigil Encoding — Volume Four","Conduit Creation and World-Bridging","The Missing Seventh Stone","Recharge Cycles and Their Disruption","What Sicarius Knew"],
+  "Andorians":   ["Andorian Presence on Toril — First Contact","The Class Rooms and Their Purpose","Civilization Across the Stars — A Survey","Mavashik and the Corruption of the Fourth Circle","What Was Lost When They Died","The Andorian Succession Problem","Records of the Uncorrupted"],
+  "Mavashik":    ["The Entity of Kyros — Initial Assessment","Promises of Power and Their Cost","Banishment to the Far Realm — Technical Record","What Woke on the Frozen World","The Corruption Vectors — Classified","Why the Andorians Did Not Destroy It","The Far Realm Seal and Its Condition"],
+  "Silver Flame":["Origins of the Warforged — Foundational Text","The Silver Flame and the Coalition It Named","Champions of the Final Battle — A Register","The Flame That Emerged Unbidden","What the Warforged Remember","Unity as a Magical Principle","After Mavashik — What the Flame Became"],
+  "Any":         ["Omissions in the Master Index","Cross-References That Lead Nowhere","Documents That Should Not Be Here","Unnamed Witnesses and Their Accounts","The Gap Between Chapters","What the Modrons Declined to Retrieve","Catalogue Discrepancies — Ongoing Investigation"]
 };
 
-var marginaliaPool = {
-  "Eldraxis": ["Later hand, red ink: 'The name in chapter 3 should not be read aloud. I mean this.'","Penciled: 'Cross-ref. the Vey'kar dossier. They knew.'","Stamped: REMOVED FROM GENERAL CIRCULATION — reason not given.","Scratched into the back cover: 'It was here before the library was.'"],
-  "Weave Theory": ["Margin, unknown hand: 'The seventh harmonic appears in the appendix if you read it backwards. I am not joking.'","Stamped twice, second stamp partially covering first: THEORETICAL USE ONLY.","Note pasted to inside cover: 'The invariants in chapter 6 are no longer invariant. Date of observation: [torn]'","Small diagram drawn in the margin of page 40. No one has been able to identify what it depicts."],
-  "Heartwood": ["Pressed between pages 12 and 13: a leaf from no identified species.","Margin note: 'The pulse slowed while I was reading this. I noticed because it usually doesn't.'","Back cover, careful hand: 'Do not bring this volume into the forest. I mean that as practical advice, not superstition.'","Stamp: RETURNED INCOMPLETE. Previous borrower did not explain."],
-  "Life Stones": ["Margin: 'The seventh fixture is not missing. Ask yourself who benefits from us believing it is.'","Pasted note: 'The recharge data in Table 4 has been altered. The original values are in the Vault copy.'","Inside cover, faded: 'If the stones are being replenished, something is paying for it. Nothing gives without terms.'","Stamp: LOAN RECORD SEALED by order of the Archivist's Council."],
-  "Vey'kar": ["Margin, careful hand: 'The Bound Name is three syllables. I have heard two of them. I will not write them here.'","Note: 'The betrayal-glyph on page 7 matches one I saw carved into a wall in [location excised].'","Stamp: RETURNED — borrower requested their own name be removed from the loan record.","Back cover: 'The cold devotion passage is accurate. I know because I have felt it. Do not ask me to elaborate.'"],
-  "Silver Flame": ["Margin: 'The calculus in chapter 4 reaches the right answer by reasoning that should terrify you.'","Pasted slip: 'The Last Accord is still active. I have seen the countersignature. It is dated forty years after all parties were declared dead.'","Stamp: NOT FOR USE IN COALITION MEDIATION PROCEEDINGS.","Note, shaking hand: 'The saints of ash chose this. I have read their final statements. They chose this.'"],
-  "Kyros": ["Margin: 'The false voices say different things to different people. They said my name. Then they said something else. I did not write it down.'","Note: 'The sealed hunger is not sealed. The documentation says it is. The documentation is wrong.'","Stamp: KYROS MATERIALS — handle under Protocol 7. Do not read alone.","Back cover, scratched deep: 'It knows we're looking.'"],
-  "Any": ["Margin, unknown hand: 'There is another copy of this document. The differences between them are the most important part.'","Pasted slip: 'The author died before completing this. The final chapter was written by someone else who did not say so.'","Stamp: CROSS-REFERENCE FLAGGED — see master index entry [entry not found].","Inside cover: 'I have read this four times. It says something different each time. I do not think that is my imagination.'"]
+// ── EXCERPTS BY TOPIC AND STYLE ───────────────────────────────────────────
+var excerpts = {
+  "Eldraxis": {
+    academic: [
+      ["Eldraxis is not a void. This is the foundational error in three centuries of scholarship, and correcting it changes everything downstream. It is the pre-existence from which all things arise — the substrate, not the absence. The Weave is energy given temporary structure. Eldraxis is what the energy is structured within.","The implications for magical theory are significant. If consciousness is borrowed from Eldraxis and shaped by the Weave into individual minds, then the experience of death is not cessation — it is return. The Andorian scholars who first proposed this were not reassured by the conclusion.","What the Voidspires actually are remains contested. The leading position — that they are scars left when universes die, lingering gateways between existence and dissolution — is consistent with observational data but offers no comfort to those who must navigate them."],
+      ["The accelerating expansion of Aldoris is not a mystery. It is Eldraxis. What mortal physics calls dark energy is the pre-existence pressing outward, making room, as it always has, for the next iteration of form.","Three researchers who spent extended periods studying Eldraxian phenomena reported the same secondary symptom: they began perceiving multiple realities simultaneously. Two recovered. The third's final report is held in the Black Index. Access requires dual authorization from the Archivist's Council.","The black holes that form when gravity becomes infinitely strong are windows. This is documented. What looks through them from the other side is not."]
+    ],
+    ominous: [
+      ["It was before everything. It will be after everything. What you call existence is a temporary arrangement it permits.","The scholars who understood this first did not find peace in the knowledge. They found the specific terror of realizing that everything they loved was a brief interruption in something that had no preference either way.","The Eldralic Tears are not wounds. They are reminders. The Weave is thinner than it was. The pre-existence is closer than it was. This is not a threat. It simply is."],
+      ["Consciousness is borrowed. You did not earn it. You were not given it. It was lent, shaped by the Weave into the temporary form you call a self, and it will be reclaimed.","The Sylvanox are not wrong. They are early.","Do not mistake the silence for emptiness. It is the loudest thing there is."]
+    ],
+    fragmented: [
+      ["Before the universe —","[page damaged]","— not empty but full of what has not yet become —","— the Weave is not a barrier. It never was. It is energy, and energy —","[three pages missing]","— which is why the scholars who returned from the Voidspires could not explain what they had seen. Not because language failed them. Because they had briefly been somewhere language came from."],
+      ["Eldraxis does not hunger. This is important.","[margin note, different hand: it does not need to]","The Weave holds —","— for now —","[stamp: THEORETICAL USE ONLY]","What the expansion means for the long-term stability of —","[final page torn cleanly]"]
+    ],
+    firsthand: [
+      ["I have looked into one of the Tears. Not for long. Long enough.","What I saw was not darkness. It was the space before darkness is possible — before distinction exists at all. I understood, for approximately four seconds, that I was not a person looking at a thing but a temporary arrangement of awareness observing its own source.","I do not recommend it. I also cannot stop thinking about it. I am writing this down because I was asked to, and because writing is one of the ways I remind myself that I am still here."],
+      ["The Modron who retrieved this text from the lower stacks told me, in its precise mechanical way, that the corridor where it was found has no record of existing. I asked if the Modron was certain. It said certainty was a function of the Weave, and near that corridor, the Weave did not behave normally.","I shelved the tome anyway. What else was I going to do.","If you're reading this: the number on the spine is not the real shelf code. I don't know what the real shelf code is. I don't think there is one."]
+    ]
+  },
+  "Weave Theory": {
+    academic: [
+      ["The Weave is not a metaphor. It is not a convenient framework for understanding magical force. It is energy — structured, temporarily — and the structure is what makes Aldoris possible. When the structure fails, the pre-existence fills the gap. This is what the Eldralic Tears are.","The seventh harmonic has been observed three times in the last century. Twice the observer survived. In the third case the observation is confirmed but the observer's subsequent account is classified. What is known is that the harmonic's existence, once theoretical, is now empirical — and that it should not be possible under current models.","Anchor migration was first noted forty years ago. The rate has increased. The anchors — the load-bearing elements of the Weave's structure — are moving. Where they are moving to, and why, is the question that this entire wing of the archive exists to answer."],
+      ["Direct manipulation of the Weave is possible. The Andorians demonstrated this at scale — the Life Stones are, at their core, a technology for puncturing and redirecting Weave energy to create conduits between worlds.","The risk is proportional to the ambition. Small manipulations produce small distortions. The Andorian-scale manipulations produced the Dispersal Era, the Mavashik Conflict, and the current state of accelerating Weave degradation. The causal chain is documented. The scholars who traced it requested the document be sealed. The request was denied.","The invariant structures — the elements that should not change under any circumstances — are changing. This is measured. This is confirmed. The current rate of change is described in the classified supplement to this volume, which requires Vault access."]
+    ],
+    ominous: [
+      ["The Weave is failing. Not quickly. Not obviously. But the measurements do not lie, and the measurements show a structure under pressure it was not designed to sustain.","The Heartwood Trees were planted to anchor it. Most of them are gone. The one on Toril died when Elarien fell. Others died in the Mavashik Conflict. Each death is a load-bearing element removed from a structure that is already stressed.","No one has published on what happens when enough anchors are gone. This is not because no one has calculated it. It is because the calculation is not a document anyone wants to exist."],
+      ["The seventh harmonic should not exist. It exists. Draw your own conclusions about what else the models have wrong.","Magic is not a gift. It is a lease on energy that belongs to something older than the concept of ownership.","The Eldralic Tears are growing. Slowly. Measurably. The measurements are in the Vault."]
+    ],
+    fragmented: [
+      ["The lattice holds —","— or held —","[note: date of composition unclear; may postdate the events described]","Seventh harmonic observed at —","[location redacted]","— the observer did not —","[page missing]","— which suggests the Weave is not behaving as the foundational models predict, and has not been for —","[torn]"],
+      ["Anchor position: stable","Anchor position: stable","Anchor position: [illegible]","Anchor position: MIGRATED — new position unknown","[stamp: THIS ENTRY HAS BEEN FLAGGED FOR REVIEW]","[second stamp: REVIEW PENDING — 11 YEARS]"]
+    ],
+    firsthand: [
+      ["I felt it go. The anchor I had been studying for six years — a fixed point in the Weave's structure that had not moved since the Andorian surveys — shifted while I was observing it. Not dramatically. Not catastrophically. Just slightly, like a foundation settling. Like a building deciding to become something else.","I filed the report. The Archivist's Council acknowledged receipt and has not responded in three years. I have continued the observations. The anchor has continued to move.","I am writing this in the margins of my own survey document because I want there to be a record that is harder to lose than an official report."],
+      ["My student asked me today whether magic was safe. She meant the casting of spells, the daily manipulation of Weave energy that every practitioner does without thinking.","I told her yes. I have been telling students yes for twenty years. I am no longer certain I was telling the truth. The Weave is energy. We are pulling on it. It was not infinite to begin with and we have been pulling on it for a very long time.","She will be a fine scholar. I hope the Weave holds long enough for her to do something with that."]
+    ]
+  },
+  "Heartwood": {
+    academic: [
+      ["The Heartwood of Elarien was not merely large. It was a conduit — its root system tapped into ley lines running beneath the city, drawing magical energy and dispersing it through the canopy in a pattern that maintained what the Andorian surveys called 'harmonious balance.' In practice, this made Elarien one of the most magically stable settlements ever recorded.","When the chaotic energy disrupted the Weave in the event recorded as the Great Spellplague, the tree absorbed the overload. This is documented. The tree could not sustain absorption at that scale. Its death was, in technical terms, a successful protective function that exceeded the system's capacity.","The stump remains. The residual magic in the root structure is still being measured. The readings do not decrease at the rate a dead system should. Several scholars have proposed that the tree is not entirely dead — that 'dead' is the wrong category for what it currently is."],
+      ["The entrance to the Myrr'aurel discovered beneath the Wizard Room — one of the Andorian class-training chambers constructed at the base of the Heartwood site — was not accidental. The Andorians built the training rooms where they did because the Heartwood's ley line nexus provided stable magical conditions for instruction.","Whether the Myrr'aurel entrance was placed there deliberately, or whether the library's interdimensional nature simply found the ley line nexus and anchored to it, is a question this archive declines to answer definitively. Both possibilities are disturbing in different ways.","The Druidic tradition holds that the Heartwood trees were not of Andorian design. If this is true — if the trees predate the Andorians — then what they were anchoring, and for whom, is a question that opens considerably more than it closes."]
+    ],
+    ominous: [
+      ["The tree died to protect Elarien. Elarien died anyway. The stump remembers both of these things and it is not at peace with either of them.","The residual magic in the roots is not fading. Something is sustaining it. The something has not been identified.","Do not touch the stump. This is not superstition. This is the consistent recommendation of every researcher who has spent significant time at the site. None of them will explain why."],
+      ["Elarien fell. The tree took the damage that should have destroyed the city and the city fell anyway. There is a lesson there about the limits of sacrifice and the indifference of outcomes.","The Andorians built their training rooms at the base of a tree that was older than they were, on a ley line nexus they did not create, adjacent to a library entrance they may not have placed.","What was here before them, and what it wanted, is not recorded. The absence of a record is its own kind of record."]
+    ],
+    fragmented: [
+      ["The tree —","[note: which tree? context missing]","— absorbed the overload and —","[page badly damaged]","— the roots still draw from the ley lines. We measured this. The tree is dead. The roots are not behaving as dead roots behave.","[margin: this is the eighth time I've tried to write this report. The previous seven drafts disappeared from my desk overnight. This one I'm leaving in the stump cavity. If you found it, you know why.]"],
+      ["Elarien: population at time of event —","[redacted]","Heartwood status: deceased","Ley line nexus: [ACTIVE — unexplained]","Wizard Room: intact, entrance functional","[stamp: DO NOT SEAL THE ENTRANCE — Council Order 7, unsigned]"]
+    ],
+    firsthand: [
+      ["I sat with the stump for three days. I know how that sounds. My colleagues said the same thing with their faces when I came back.","On the second day I heard it. Not sound exactly — more like the memory of sound, the shape that sound leaves in the air after it ends. The tree was not speaking. It was remembering. And because I was sitting close enough, I was remembering with it.","I saw Elarien as it was. Not the ruins. The city. I am writing this down before it fades because what I saw matters and I don't entirely trust myself to remember it accurately for long."],
+      ["The entrance was right where the survey said it would be. Under the training room floor, behind a wall that had been sealed and painted over so many times it looked structural. Wasn't.","Beyond it: the Myrr'aurel. The Infinite Staircase. The smell of books from a thousand worlds. And the specific feeling, which I cannot better describe than this, of a library that knew I had arrived and had opinions about it.","I filed the standard entry report. Where it goes from here is above my authority. I'm attaching this note for whoever reads the file next: go carefully. The lower stacks are not mapped. The Modrons who retrieve from them sometimes come back changed."]
+    ]
+  },
+  "Life Stones": {
+    academic: [
+      ["The Life Stones are not power sources in the conventional sense. They are Etherium artifacts — and Etherium, the rarest material in any known world, has properties that suggest it is not properly of any world at all. The celestial sigils engraved into each stone are not decorative. They are functional encoding for the conduit-creation process, which tears open the Weave to establish a stable passage between distant worlds.","Each crafting took centuries. Not because the process was slow, but because Etherium was scarce — buried deep, requiring excavation that itself required significant magical infrastructure. The Andorians built civilizations on the worlds they visited partly to create the stable conditions necessary to produce the next stone.","The recharge cycle is proportional to the magnitude of the use. A small conduit requires decades of dormancy. The world-bridging events documented in the Andorian expansion surveys required centuries. The stones dispersed after the Mavashik Accord have not, to this archive's knowledge, been used since. Their current charge state is unknown."],
+      ["Six stones are accounted for. Their current locations are distributed across the known worlds in a pattern that the Andorian survivors described as 'the safest possible dispersal given the constraints.' What the constraints were is not specified in the public record.","The seventh stone is the subject of considerable archival debate. The majority position is that it was lost during the Mavashik Conflict. The minority position — documented in the Vault copy of this survey, which differs from the public version by seventeen pages — is that it was not lost but removed, by parties who have not been identified, for purposes that have not been established.","The implications of a Life Stone in unknown hands are significant enough that the Archivist's Council has declined to publish the minority position. This footnote is this document's record that the minority position exists."]
+    ],
+    ominous: [
+      ["The stones cannot be destroyed. The Andorians tried. They tried everything available to a civilization that had crossed five solar systems and built cities on six worlds. The stones did not break.","What this means about what Etherium actually is — where it comes from, what it is made of at a level below material analysis — is not addressed in any text this archive holds. The absence is noted.","The dispersal was not a solution. It was a delay. The question is delay of what, exactly, and whether the delay is still holding."],
+      ["Something is replenishing the stones. The recharge data shows rates inconsistent with passive recovery. Something is paying the cost of that replenishment. In the Andorian framework, nothing gives without terms.","The seventh stone is not lost. Lost things can be found by accident. This one can only be found by someone who knows where to look.","Someone knows where to look."]
+    ],
+    fragmented: [
+      ["Stone One: location — [redacted]","Stone Two: location — [redacted]","Stone Three: location — [redacted]","[four entries, all redacted]","Stone Seven: location — [page torn here]","[margin, shaking hand: I saw it. I know where it is. I cannot write it here. Find me if you need to know. If I'm gone, assume someone else found me first.]"],
+      ["Etherium extraction method —","[missing]","Sigil encoding sequence —","[missing]","Conduit stabilization —","[VAULT COPY ONLY]","What Sicarius knew about the seventh —","[stamp: THIS ENTRY WAS NOT IN THE ORIGINAL DOCUMENT]"]
+    ],
+    firsthand: [
+      ["I held one. Briefly. The Modron who brought it up from the Vault did not want me to touch it and said so in the precise, unafraid way Modrons say things. I touched it anyway.","It was warm. Not warm the way a fire is warm — warm the way a living thing is warm. It knew it was being held. I cannot prove this. I am a scholar of thirty years and I cannot find a better description than: it knew.","I put it down. The Modron looked at me the way Modrons look at things when they are recording an observation. I asked it not to include that detail in the retrieval log. It said it was required to include all observations. It is in the retrieval log."],
+      ["Sicarius permitted interplanetary travel under his rule. The histories present this as an act of generosity — the Andorian leader opening the stars to the races they had uplifted.","I have read the private correspondence. Access to the Vault copy required a petition that took eight months to approve. What the correspondence shows is that the decision was not generosity. It was calculation. Sicarius knew something about the Life Stones' long-term stability that made dispersal across multiple worlds preferable to concentration.","What he knew, I cannot determine from what is here. The relevant letters have been removed. The removal is noted in the archive intake record. The person who removed them is not named."]
+    ]
+  },
+  "Andorians": {
+    academic: [
+      ["The Andorians were not gods. This clarification appears in the preamble of every serious scholarly work on the subject, which suggests the clarification is necessary — which suggests how the intervening centuries have treated their memory.","They were a civilization of extraordinary arcane and intellectual capacity who developed, over millennia, the ability to cross the distances between worlds using artifacts of their own creation. They found inhabited worlds, assessed the populations, and chose to intervene — to teach, to uplift, to share the knowledge they had accumulated.","The question of whether this was benevolence or something more complicated is addressed in the Vault copy of this survey. The Hall copy presents the standard account. The differences between them are not trivial."],
+      ["The training rooms — the class chambers built beneath the Heartwood site and in corresponding locations across the worlds the Andorians visited — were not merely pedagogical. They were, the evidence suggests, also observational. The Andorians were watching how the races they had uplifted developed under structured instruction.","What they intended to do with those observations is unclear. The Mavashik Conflict interrupted whatever plan existed, and the survivors were too few and too dispersed to implement anything.","The uncorrupted Andorians who fought alongside the Silver Flame left records. Fewer than one might expect. The Modrons have retrieved what can be retrieved. Some of it is in this archive. More of it, the intake records suggest, is in the lower stacks — the unmapped sections where the Modrons occasionally decline to go."]
+    ],
+    ominous: [
+      ["They built the training rooms. They dispersed the Life Stones. They created the Warforged. They founded the Silver Flame. They banished Mavashik to the Far Realm rather than destroy it, because destruction was impossible.","Nearly all of them are dead. The races they uplifted are still here. Whatever they intended, this is what it became.","Their absence is the most important fact about the current age. Everything that is breaking was built to be maintained by people who no longer exist."],
+      ["Mavashik promised them power and immortality and they turned on each other. This is the part of the history that is hardest to sit with — not that there was a great evil, but that the great evil found purchase in people who had done genuinely good things for centuries.","The corruption was not immediate. It was gradual. It found the ambitions they had managed and offered to stop the managing.","Consider who in your world is being offered something similar. Consider what they are being asked to give up to receive it."]
+    ],
+    fragmented: [
+      ["Andorian presence on Toril: confirmed","Date of arrival: [pre-dates reliable records]","Purpose of visit: [multiple accounts, contradictory]","Heartwood connection: [VAULT ONLY]","Training rooms constructed: confirmed, at least seven identified","[note: the eighth has not been found. It exists. The intake records reference it. No one has filed its location.]"],
+      ["The uncorrupted —","[remainder of page in a script no identified scholar can read]","[below, in a different hand, in common: 'I can read this. I am not going to write down what it says here. Find me. — A.']","[the entry for 'A.' in the researcher index has been removed]"]
+    ],
+    firsthand: [
+      ["I have read everything this archive holds about the Andorians. It took four years. I want to say that at the end of four years I understood them.","I do not understand them. I understand what they did. I understand the sequence of decisions and the scale of the consequences. I do not understand who they were — what they wanted, in the private way that people want things — because that is the information that doesn't survive. The private self leaves fewer records than the public one.","What I can say is this: they were not simple. The simple version — wise ancestors who fell to corruption — is useful and wrong. The true version is harder and more important and this archive has only pieces of it."],
+      ["The Modron brought me a document today that it described as 'an Andorian personal letter, recovered from the lower stacks, origin uncertain.' It was addressed to someone whose name I recognized from the corruption records — one of the ones who turned.","The letter was from before the turning. It was written by someone who loved them. It was written in a tone that assumed the best.","I held it for a long time. I filed it in the Vault. Some documents are too heavy to leave in general circulation."]
+    ]
+  },
+  "Mavashik": {
+    academic: [
+      ["The entity encountered on Kyros was not identified in the Andorian advance surveys. This is significant. The surveys were thorough — the Andorians had centuries of experience assessing worlds before landing. What Mavashik was, and how it evaded detection, is addressed in the classified supplement to the initial assessment, which is held in the Black Index.","The mechanism of corruption is partially documented. Mavashik offered power and immortality. The offer was not a lie in the crude sense — what it offered was real. The cost was not disclosed upfront. The cost, as reconstructed from accounts of those who turned and subsequently recovered, was the gradual replacement of one's own desires with Mavashik's.","The banishment to the Far Realm was the only option available once destruction was confirmed impossible. The seal was constructed by the Silver Flame and the remaining uncorrupted Andorians working in concert. Its current condition is not publicly assessed. A sealed assessment exists in the Black Index."],
+      ["Kyros itself — the frozen world that housed Mavashik — is still there. The Andorian Life Stone used to reach it was the last stone used before the dispersal. It was left on Kyros. Whether it is still there is unknown.","The void frost phenomenon — observable near any object or location with confirmed Mavashik contact — is not a temperature effect. It is the absence of something. Instruments that measure cold do not register it. Instruments that measure the absence of Weave-energy register it very clearly.","What exactly is absent in the vicinity of Mavashik-touched material, and whether that absence is stable or spreading, is the question this archive has been asked not to investigate publicly. It is investigating privately. The findings will be published when the Council determines the appropriate moment. The Council has not determined this yet."]
+    ],
+    ominous: [
+      ["It was on Kyros before the Andorians arrived. It was asleep. They woke it.","The offer it made was specific to each person. It did not offer the same thing to everyone — it offered what each person most wanted, in the form they would most accept. This required it to know them. It knew them before it spoke.","It is in the Far Realm. The Far Realm is not here. This is the only comforting fact and it is not as comforting as it sounds."],
+      ["The void frost appears near things it has touched. There are objects in this archive that register it. The Modrons know which ones. The Modrons have been instructed not to retrieve them without authorization.","Mavashik could not be destroyed. It was not destroyed. It was moved.","The seal is old. Everything that was built to be maintained by the Andorians is now old and unmaintained. The seal is not an exception to this."]
+    ],
+    fragmented: [
+      ["Kyros: initial survey — no significant entities detected","[second survey, filed separately: ONE ENTITY DETECTED — classification UNKNOWN — recommend immediate withdrawal]","[the second survey was not acted upon]","First contact with Mavashik: [date]","Duration before first corruption: [REDACTED — see Black Index file KY-1]","[final page, different hand: we should not have landed]"],
+      ["The seal holds —","[as of what date?]","— condition assessment pending —","[pending since when?]","— the Council will release findings —","[the Council has not released findings]","[margin, no attribution: someone should go check]"]
+    ],
+    firsthand: [
+      ["I was one of the researchers permitted to review the corruption accounts — the testimony of those who turned and then recovered. It required six months of petitioning and a personal interview with two members of the Archivist's Council.","What the accounts describe is not possession. That is the wrong frame. What Mavashik did was find the place in each person where they wanted more than they had, and it sat there, and it waited, and it did not push. It just made the wanting louder.","Most of them didn't notice when they crossed the line. That is the part I cannot stop thinking about."],
+      ["The Far Realm is not a place in the way that Kyros is a place. This is the consensus position. The seal is not a door in the way that the Myrr'aurel entrance is a door.","I am writing this because two of my colleagues have begun asking questions about the seal's construction — not theoretically, but practically, as if they were planning to inspect it. I have reported this to the Council. The Council has not responded.","I am leaving a copy of this note in three separate locations in the archive. If you are reading this and I have not checked in within a month of the date on this document, please tell someone who can do something about it."]
+    ]
+  },
+  "Silver Flame": {
+    academic: [
+      ["The Silver Flame as a named coalition predates the Warforged. This is frequently misunderstood. The flame itself — the literal silver fire that emerged during the Andorian process of infusing Weave-energy into metal and wood — appeared first. The Warforged were born from that process. The coalition of champions was named afterward, in recognition of what the flame represented.","The champions drawn from the allied races — elves, humans, dwarves, and others — were not simply warriors. The Silver Flame selected for a specific quality that the Andorian records describe as 'the capacity to act against self-interest in service of a larger good.' In practical terms, this meant people who could be trusted with power because they did not want it for themselves.","The Warforged who emerged from the flame-process were tireless and resilient in the mechanical sense, but the accounts that survive from those who knew them describe something more: a quality of steadiness, of presence, as though the Weave-infusion had given them not just function but character."],
+      ["What the Silver Flame became after Mavashik's banishment is not well-documented. The Andorians who survived were too few to sustain the institutional structures they had built, and the allied races who had fought under the Silver Flame banner dispersed to their own worlds with the stones that were placed in their keeping.","The symbol persists. The silver flame emblem appears in records from every world the Andorians touched, always with the same meaning: resistance to the corrupting force, commitment to what holds rather than what consumes. Whether any organized continuity of the original coalition exists is a question this archive has not been able to answer from available records.","Several Warforged are believed to still be active. They do not age. They were built not to. Their current locations and purposes are not known to this archive."]
+    ],
+    ominous: [
+      ["They won. Mavashik was banished. The Andorians who survived dispersed. The Warforged scattered. The flame that had named them went wherever flames go.","This is a victory. Look at what the victory cost and decide if you agree.","The silver flame appears, still, in accounts from the deep stacks — in documents that postdate the Mavashik Conflict by centuries. Something is still burning somewhere. The Modrons who retrieved the relevant documents declined to specify where they found them."],
+      ["The champions were selected for the capacity to act against self-interest. Consider what that selection process required — what it meant to be assessed for that quality, and by whom, and on what evidence.","Several of them did not survive the final battle. Their names are in the register. Their last words are in the Vault. Some of the last words are not in any language the current archivists can translate, which means the champions said them, and meant them, and no one who remains can know what they were.","The Warforged do not die of age. They are still out there. They remember everything."]
+    ],
+    fragmented: [
+      ["The flame appeared on —","[date unclear]","— unbidden, during the infusion process —","[technical notes, heavily damaged]","— and the Andorian observers present reported that it was —","[word illegible]","— and that they felt, in its presence, something they could not name and subsequently spent considerable time trying to name in the documents that follow, none of which reach a satisfying conclusion."],
+      ["Champion register — Silver Flame coalition","[names listed, approximately forty, half redacted]","Warforged units created: [number redacted]","Units confirmed destroyed in conflict: [number redacted]","Units whose current status is unknown: [number redacted]","[margin: the ones whose status is unknown are not destroyed. I would know if they were destroyed. — M.W., designation scratched out]"]
+    ],
+    firsthand: [
+      ["I interviewed a Warforged. It took eighteen months to arrange and required the Council's direct authorization.","It was polite. It was precise. It answered every question I asked in full, and it waited while I wrote the answers down, and it did not seem impatient in the way that people who are waiting often seem impatient.","At the end I asked it what the silver flame had felt like, from the inside, in the moment of its creation. It was quiet for a long time — long enough that I started to wonder if I had asked something I shouldn't have. Then it said: 'Like being told, without words, that what I was about to do mattered.'","I closed my notebook. I didn't have any more questions."],
+      ["The symbol is still recognized. I have shown it in six cities on three worlds — sometimes to scholars, sometimes to common people, sometimes to old soldiers who looked at it and didn't say anything for a while.","Everyone knew what it meant. Not the history — most of them had fragments at best. But the meaning underneath the history: that there was a moment when all the races chose the same thing, and the choice held, and the thing they chose it against did not win.","That knowledge has survived everything. The institutions are gone, the Andorians are gone, most of the champions are gone. The knowledge that the choice was made, and held — that is still here. I think that is the point. I think that was always the point."]
+    ]
+  },
+  "Any": {
+    academic: [
+      ["The master index for this section contains fourteen entries that cross-reference documents which, when retrieved, do not contain the cross-referenced content. The discrepancy has been under investigation for eleven years. No resolution has been reached. The investigation continues.","Unnamed witnesses appear in the margins of documents across six wings of the archive. The handwriting is consistent. The observations attributed to this witness have, in every verifiable case, proven accurate. The witness has not been identified despite sustained effort.","What the catalogue lies in this section are intended to obscure is not established. That they are deliberate — rather than errors — has been confirmed by the archivists who first noted them. The confirmation is in the Vault. Access requires a specific petition that the Council reviews personally."],
+      ["The gap between chapters in this volume is not a binding error. The missing pages were removed before the tome entered the collection — the intake record notes the absence, flags it for investigation, and the investigation file cannot currently be located.","Documents that should not be here are here. Documents that should be here are not. The Modrons retrieve what they are sent to retrieve, but the lower stacks are not fully catalogued, which means there are tomes in this archive that no one has read and no one knows to ask for.","The Whispering Shelves — the deepest accessible section of the Myrr'aurel — operate by different principles than the upper halls. Books appear there without procurement records. The Modrons do not always return from retrieval requests in that section. Those that do return decline to describe what they saw."]
+    ],
+    ominous: [
+      ["Something in this archive has been here longer than the archive has.","The Modrons know which tomes. They will not say which ones. They will say that certain tomes should not be retrieved, and that they have standing instructions not to retrieve them, and that the instructions predate the current Archivist's Council by several centuries.","Whatever filed those instructions knew what they were doing. Whatever they were protecting the rest of the archive from is still in the lower stacks."],
+      ["The archive does not discriminate. Everything is recorded. Not everything is meant to be read.","This is carved into the entrance of the Infinite Staircase in four languages. It is not a warning against reading. It is a description of what some of the knowledge in the lower depths actively resists.","The scholars who came back from certain sections of the Black Index are fine. They are all fine. They would prefer not to discuss what fine means now, as opposed to what it meant before."]
+    ],
+    fragmented: [
+      ["Cross-reference: [document not found]","Cross-reference: [document not found]","Cross-reference: [document exists, location unknown]","Cross-reference: [this reference was not in the original text — added by unknown hand at unknown date]","[margin: if you're following the trail, the next one is in the Vault under a false title. Look for the one that says it's about agricultural policy. It isn't.]"],
+      ["Date of intake: [illegible]","Acquired from: [no record]","Condition at intake: [pristine]","Modron retrieval log: [no record of retrieval — tome appeared on shelf without requisition]","[stamp: ANOMALOUS INTAKE — see Protocol 12]","[Protocol 12 does not appear in the current index of protocols]"]
+    ],
+    firsthand: [
+      ["I have been working in this archive for twenty-two years. I know its rhythms. I know the sounds it makes at night — the settling of the Infinite Staircase, the occasional soft sound from the deeper levels that everyone here learns to not think too hard about.","Last week something was different. I cannot describe it precisely. The archive felt like it was paying attention in a way it usually doesn't.","Nothing happened. Nothing visible, nothing measurable. But I checked my work twice before I left, and I took a different route out, and I slept with the lamp on. I am a scholar of twenty-two years and I slept with the lamp on."],
+      ["The Modron that retrieves from my section has been with me for six years. It is methodical and reliable and it processes requests without comment.","Yesterday it brought me a tome I did not request. It placed it on my desk and waited. I asked it why it had brought this. It said: 'You will want to read this.' I asked how it knew. It said: 'The archive suggested it.'","I have not opened the tome yet. I am writing this first because I want there to be a record of the moment before I open it, in case the moment after is different in a way I cannot predict.","It is on my desk. It is watching me write this. I am going to open it now."]
+    ]
+  }
 };
 
-var truthTypes = ["Key","Lie","Bait","Prophecy","Trap","Map-Fragment","Cipher","Confession","Warning","Decoy","Partial Truth","Corrupted Record"];
-var factions = ["a Sylvanox cell operating within the archive","a Vey'kar emissary traveling under a false name","a Silver Flame remnant with unfinished business","an Andorian echo-warden maintaining old protocols","an Eldraxian patron-signal — not a person, a transmission","an unknown third party who has accessed this tome before the party","the Archivist's Council itself, internally","a former ally whose motives have shifted"];
-var hookPhrases = ["cross-references a missing volume in","directly contradicts the canonical account held in","names a specific location accessible only via","contains a cipher whose key exists only in","implies a secondary source hidden somewhere within","points toward an unauthorized copy held outside"];
+// ── MARGINALIA ────────────────────────────────────────────────────────────
+var marginalia = {
+  "Eldraxis":    ["Later hand, careful ink: 'The Sylvanox are not wrong. This is the part the rest of us don't want to say out loud.'","Stamped twice: THEORETICAL USE ONLY — the second stamp slightly askew, as though applied in haste.","Penciled at the bottom of the final page: 'If consciousness is borrowed, what does it mean that some of us don't want to give it back?'","Small notation beside the Voidspire section: 'I went through one. This account is accurate as far as it goes. It does not go far enough. — V.'"],
+  "Weave Theory":["Margin, unknown hand: 'The seventh harmonic is in the appendix if you invert the notation. I am not joking and I am not here to answer questions about it.'","Pasted note on the inside cover: 'The invariants in chapter 6 are no longer invariant. Date I confirmed this: [date]. Date I reported it: [same date]. Date I received a response: [blank].'","Stamped: RESTRICTED — ANCHOR MIGRATION DATA — and beneath the stamp, in pencil: 'too late to restrict. everyone who needs to know already does.'","A single line drawn in red ink under the phrase 'the Weave is not eternal.' Nothing else."],
+  "Heartwood":   ["Pressed between pages 12 and 13: a leaf from no identified species, still faintly green.","Margin note in a druidic script that the archive's translators render as: 'The tree is not dead. Dead is the wrong word. Ask me what the right word is if you can find me.'","Back cover, careful hand: 'Do not bring this volume into the stump cavity. I mean this as practical advice, not as superstition. There is a difference and in this case the difference matters.'","Stamp: RETURNED INCOMPLETE — and below, different hand: 'the missing pages weren't in the tome when I borrowed it. They were somewhere else. I put them back where I found them.'"],
+  "Life Stones": ["Margin: 'The seventh stone is not missing. Missing implies it was lost. It wasn't lost. Someone has it.'","Pasted note: 'The recharge data in Table 4 has been altered from the Vault copy. The original values suggest the stones are not recharging passively. Compare before drawing conclusions.'","Inside cover, faded: 'Etherium is not from any of the worlds the Andorians visited. I checked. It is not from the worlds they came from either. I checked that too. I stopped checking because I didn't want to find the answer.'","Stamp: LOAN RECORD SEALED — and beneath, scratched small: 'by order of someone who knew what was in here.'"],
+  "Andorians":   ["Margin: 'The eighth training room is real. I found it. I am not writing the location here. Find me if you want to know — assuming you can.'","Penciled: 'They built everything. They left. What we inherited was not designed to run without them.'","Inside cover, careful hand: 'The uncorrupted ones who survived were changed by what they saw. Not corrupted — changed. There is a difference. The difference is important. The records don't capture it because the records were written by people who weren't there.'","Stamp: CROSS-REFERENCE RESTRICTED — below, in pencil: 'specifically the cross-reference to the Mavashik intake records. specifically that one.'"],
+  "Mavashik":    ["Margin: 'The void frost is spreading. Slowly. I have been measuring it for three years. The rate is consistent. The direction is not random.'","Pasted note, edges burned: 'The seal was designed by the Andorians. The Andorians are gone. Draw your own conclusion about current maintenance.'","Scratched into the back cover: 'It knew my name before I told it. I found this account in the archive. It knew my name too. I don't know what to do with that.'","Stamp: KYROS MATERIALS — HANDLE UNDER PROTOCOL 7 — and below, different ink: 'Protocol 7 has been suspended pending review. The review has been pending for forty years.'"],
+  "Silver Flame":["Margin: 'The Warforged who was present at the final battle is still active. I have met them. They do not want to be found. Please respect this.'","Pasted slip: 'The last words of three champions cannot be translated. I have tried six languages and two dead scripts. The words are not in any of them. The words are something else.'","Stamp: NOT FOR USE IN COALITION MEDIATION — below, pencil: 'there is no coalition left to mediate. the stamp is forty years out of date. everything about this situation is forty years out of date.'","Inside cover, two hands, a conversation: First: 'The flame still burns somewhere.' Second: 'How do you know.' First: 'Because it would feel different if it didn't.'"],
+  "Any":         ["Margin, unknown hand, consistent with fourteen other documents: 'I was here before this tome. I will be here after it. The archive knows I'm here. We have an arrangement.'","Pasted slip: 'The author of this document is not the person named on the spine. The person named on the spine died six years before the composition date. The intake archivist noted this. The note has been removed.'","Stamp: CROSS-REFERENCE FLAGGED — below, three lines of text that have been so thoroughly blacked out that the page is damaged: 'the cross-reference leads somewhere the Council does not want followed.'","Inside cover: 'I have read this four times. It says something different each time. On the fourth reading it said something that was addressed directly to me, by name. I am not going to write what it said. I am going to put this tome back and walk away and not think about it. This note is evidence that I am not succeeding at the last part.'"]
+};
+
+// ── CONSEQUENCES ──────────────────────────────────────────────────────────
 var cNeutral = [
-  {text:"No immediate consequence. The tome is what it appears to be — for now.",a:0,c:0},
-  {text:"A useful truth is obtained, but cross-referencing reveals a deliberate inconsistency with another source.",a:0,c:0},
-  {text:"A false lead has been planted — convincing unless the party consults a corroborating source.",a:0,c:0},
-  {text:"The catalog entry for this tome has been quietly altered since last index. Someone knew to look.",a:1,c:0},
-  {text:"The tome is genuine but a key section has been excised cleanly. The excision is recent.",a:0,c:0}
+  {text:"No immediate consequence. The tome appears to be exactly what it claims to be.",a:0,c:0},
+  {text:"A useful truth is obtained, but cross-referencing with another source reveals a deliberate inconsistency.",a:0,c:0},
+  {text:"A false lead has been embedded convincingly. It holds up unless the party consults a corroborating source.",a:0,c:0},
+  {text:"The catalog entry for this tome has been quietly altered since last index. Someone knew to look here.",a:1,c:0},
+  {text:"The tome is genuine but a key section has been excised recently and cleanly. The removal is newer than the tome.",a:0,c:0}
 ];
 var cAlive = [
   {text:"Attention +1. The stacks re-index around the reader. Something within the archive has registered this inquiry.",a:1,c:0},
-  {text:"Contamination +1. A recurring dream begins — a glyph, a door, a phrase in a language the dreamer does not speak.",a:0,c:1},
-  {text:"Attention +1. A named NPC becomes aware of the party's inquiry. They will make contact within the week.",a:1,c:0},
-  {text:"Attention +1, Contamination +1. The tome reshelves itself before the session ends. No one sees it move.",a:1,c:1},
-  {text:"Contamination +1. The reader retains a single phrase from the text that they cannot stop reciting internally.",a:0,c:1},
-  {text:"Attention +2. A Myrr'aurel archivist appears with polite questions. They already know more than they should.",a:2,c:0},
-  {text:"No clock change — this time. The library is watching. Mark this tome; the consequence is deferred, not cancelled.",a:0,c:0},
-  {text:"Contamination +2. A false memory is installed: the reader is certain they have read this before, years ago, somewhere else.",a:0,c:2},
-  {text:"Attention +1. The borrowing record for this tome now lists the reader's name in a hand that is not the librarian's.",a:1,c:0},
-  {text:"Contamination +1, Attention +1. The reader understands a passage that was previously illegible. They cannot explain how.",a:1,c:1}
+  {text:"Contamination +1. A recurring element begins appearing in dreams — a glyph, a door, a phrase in an unfamiliar language.",a:0,c:1},
+  {text:"Attention +1. A named NPC becomes aware of the party's research within the week. They will make contact.",a:1,c:0},
+  {text:"Attention +1, Contamination +1. The tome reshelves itself before the session ends. No one witnesses the movement.",a:1,c:1},
+  {text:"Contamination +1. The reader retains one phrase internally that they cannot stop repeating to themselves.",a:0,c:1},
+  {text:"Attention +2. A Librarium Modron arrives with a polite request to discuss the nature of the inquiry. It already knows more than it should.",a:2,c:0},
+  {text:"No clock change — this time. The archive is watching. The consequence is deferred, not cancelled. Mark this tome.",a:0,c:0},
+  {text:"Contamination +2. A false memory is installed: the reader is certain they have encountered this knowledge before, elsewhere, years ago.",a:0,c:2},
+  {text:"Attention +1. The borrowing record for this tome now lists the reader's name in a hand that is not the archivist's.",a:1,c:0},
+  {text:"Contamination +1, Attention +1. The reader understands a passage that was previously illegible. They cannot account for the knowledge.",a:1,c:1}
 ];
-var highRisk = [
-  {text:"Attention +2, Contamination +1. The final page of the tome contains the reader's name. It was there before they arrived.",a:2,c:1},
-  {text:"Contamination +3. The text shifts between readings. The third reading says something the first two did not. It is addressed directly to the reader.",a:0,c:3},
-  {text:"Attention +3. The Black Index has flagged this access. An investigator has been assigned. They are already in the building.",a:3,c:0}
+var cHigh = [
+  {text:"Attention +2, Contamination +1. The final page of the tome contains the reader's name. The ink is old. It was there before they arrived.",a:2,c:1},
+  {text:"Contamination +3. The text shifts between readings. The third reading addresses the reader directly and knows things it should not.",a:0,c:3},
+  {text:"Attention +3. The Black Index has flagged this access. An investigator has been assigned from outside the archive. They are already traveling.",a:3,c:0},
+  {text:"Contamination +2, Attention +1. A Librarium Modron that has been observing the reader approaches and says: 'The archive has a message for you.' It then recites something in Andorian.",a:1,c:2}
 ];
 
-function rnd(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-function roll(a,b) { return Math.floor(Math.random()*(b-a+1))+a; }
-function uid() { return Date.now().toString(36)+Math.random().toString(36).slice(2); }
-function esc(s) { return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+var truthTypes = ["Key","Lie","Bait","Prophecy","Trap","Map-Fragment","Cipher","Confession","Warning","Decoy","Partial Truth","Corrupted Record","Misdirection"];
+var factions = [
+  "a Sylvanox cell operating within the archive under false research credentials",
+  "an agent of an unidentified party who has accessed this tome before the party",
+  "the Archivist's Council itself, acting on information it has not made public",
+  "a Warforged of uncertain allegiance whose movements through the archive have been noted but not intercepted",
+  "a Silver Flame remnant pursuing an objective that predates the current political situation",
+  "a Librarium Modron whose behavior has deviated from standard parameters in undocumented ways",
+  "whoever removed the sections missing from this tome — they had a reason and the reason matters",
+  "a scholar whose research license was revoked eighteen months ago and who should not still have access"
+];
+var hookPhrases = [
+  "cross-references a volume that does not appear in the master index but physically exists in",
+  "directly contradicts the canonical account held in the sealed section of",
+  "names a specific location that does not appear on any map currently held in",
+  "contains a cipher whose key exists only in the classified supplement to",
+  "implies a secondary source that has been deliberately omitted from the catalogue of",
+  "points toward an access point in the archive that is not on the official map of"
+];
 
-function shelf(wing,depth) {
-  var w = wing.slice(0,2).toUpperCase();
-  var d = depth==="Hall"?"H":depth==="Vault"?"V":"B";
+function rnd(arr){return arr[Math.floor(Math.random()*arr.length)];}
+function roll(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2);}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+
+function shelf(wing,depth){
+  var w=wing.slice(0,2).toUpperCase();
+  var d=depth==="Hall"?"H":depth==="Vault"?"V":"B";
   return w+"-"+d+"-"+roll(1,9)+roll(0,9)+"."+roll(1,7)+"."+roll(1,12);
 }
 
-function makeTitle() {
-  var p = rnd(titlePrefix);
-  var c = rnd(titleCore);
-  var s = rnd(titleSuffix);
-  return p+" "+c+s;
+function makeTitle(tag){
+  var cores=titleCore[tag]||titleCore["Any"];
+  return rnd(titlePrefix)+" "+rnd(cores);
 }
 
-function makeExcerpt(tag) {
-  var pool = topicExcerpts[tag] || topicExcerpts["Any"];
+function pickAuthor(wing){
+  if(wing==="Forbidden") return rnd(uldarNames);
+  if(wing==="Planar") return rnd(Math.random()>0.5?andorianNames:modronNames);
+  if(wing==="Liturgies") return rnd(andorianNames);
+  return rnd(Math.random()>0.3?humanNames:andorianNames);
+}
+
+function getExcerpt(tag,st){
+  var pool=excerpts[tag]||excerpts["Any"];
+  var stylePool=pool[st]||pool["academic"];
+  return rnd(stylePool);
+}
+
+function getMarginalia(tag){
+  var pool=marginalia[tag]||marginalia["Any"];
   return rnd(pool);
 }
 
-function makeMarginalia(tag) {
-  var pool = marginaliaPool[tag] || marginaliaPool["Any"];
-  return rnd(pool);
-}
+function go(){
+  var wing=document.getElementById("wing").value;
+  var depth=document.getElementById("depth").value;
+  var topic=document.getElementById("topic").value;
+  var risk=Number(document.getElementById("risk").value);
+  var tag=topic==="Any"?rnd(["Eldraxis","Weave Theory","Heartwood","Life Stones","Andorians","Mavashik","Silver Flame"]):topic;
 
-function go() {
-  var wing = document.getElementById("wing").value;
-  var depth = document.getElementById("depth").value;
-  var topic = document.getElementById("topic").value;
-  var risk = Number(document.getElementById("risk").value);
-  var pool = wing==="Forbidden" ? uldarNames : wing==="Planar" ? andorianNames : humanNames;
-  var tag = topic==="Any" ? rnd(["Eldraxis","Weave Theory","Heartwood","Life Stones","Vey'kar","Silver Flame","Kyros"]) : topic;
+  var cpool=mode==="alive"?cAlive:cNeutral;
+  if(risk>=4&&mode==="alive"){cpool=cpool.concat(cHigh);}
+  var consequence=rnd(cpool);
 
-  var cpool = mode==="alive" ? cAlive : cNeutral;
-  if (risk >= 4 && mode === "alive") { cpool = cpool.concat(highRisk); }
-  var consequence = rnd(cpool);
-
-  var dm = {
-    type: rnd(truthTypes),
-    faction: rnd(factions),
-    hook: "This tome "+rnd(hookPhrases)+" the "+depth+" of the "+wing+" Wing.",
-    note: risk>=3 ? "Contradicts an established canonical claim — may represent deliberate censorship, a planted lure, or evidence of timeline divergence." : "Consistent with known fragments on the surface, but notably incomplete in ways that may be intentional.",
-    consequence: consequence
+  var dm={
+    type:rnd(truthTypes),
+    faction:rnd(factions),
+    hook:"This tome "+rnd(hookPhrases)+" the "+depth+" of the "+wing+" Wing.",
+    note:risk>=3?"Contradicts an established canonical position — may represent deliberate censorship, a planted lure, or evidence that the public record and the true record have diverged.":"Consistent with the standard account on the surface, but notably incomplete in ways that may be intentional.",
+    consequence:consequence
   };
 
-  currentTome = {
-    id: uid(),
-    at: new Date().toISOString(),
-    wing:wing, depth:depth, topic:topic, risk:risk,
-    title: makeTitle(),
-    author: rnd(pool),
-    era: rnd(eras),
-    phys: rnd(physList),
-    shelf: shelf(wing,depth),
-    excerptParas: makeExcerpt(tag),
-    marginalia: makeMarginalia(tag),
-    dm: dm,
-    tag: tag
+  currentTome={
+    id:uid(),
+    at:new Date().toISOString(),
+    wing:wing,depth:depth,topic:topic,risk:risk,
+    title:makeTitle(tag),
+    author:pickAuthor(wing),
+    era:rnd(eras),
+    phys:rnd(physList),
+    shelf:shelf(wing,depth),
+    excerptParas:getExcerpt(tag,style),
+    marginalia:getMarginalia(tag),
+    dm:dm,
+    tag:tag,
+    style:style
   };
 
   paintTome();
-  document.getElementById("btnSave").disabled = false;
-  document.getElementById("btnReroll").disabled = false;
+  document.getElementById("btnSave").disabled=false;
+  document.getElementById("btnReroll").disabled=false;
 
-  if (consequence.a || consequence.c) {
-    clocks.attention = Math.min(6, clocks.attention+consequence.a);
-    clocks.contamination = Math.min(6, clocks.contamination+consequence.c);
-    localStorage.setItem(CK, JSON.stringify(clocks));
+  if(consequence.a||consequence.c){
+    clocks.attention=Math.min(6,clocks.attention+consequence.a);
+    clocks.contamination=Math.min(6,clocks.contamination+consequence.c);
+    localStorage.setItem(CK,JSON.stringify(clocks));
     paintClocks();
   }
 }
 
-function paintTome() {
-  var t = currentTome;
-  if (!t) {
-    document.getElementById("tomeOutput").innerHTML = '<div class="empty-state"><div class="empty-glyph">&#x2B21;</div><p>Retrieve a tome to reveal its contents.</p><p class="hint">The shelves are said to listen better than they see.</p></div>';
+function paintTome(){
+  var t=currentTome;
+  if(!t){
+    document.getElementById("tomeOutput").innerHTML='<div class="empty-state"><div class="empty-glyph">&#x2B21;</div><p>Retrieve a tome to reveal its contents.</p><p class="hint">No one has ever reached its true depths. Some knowledge within was never meant to be found.</p></div>';
     return;
   }
-  var rc = t.risk>=4 ? "rh" : "";
-  var dc = t.depth==="Black Index" ? "db" : "";
-
-  var excerptHtml = t.excerptParas.map(function(p){ return '<p>'+esc(p)+'</p>'; }).join("");
-
-  document.getElementById("tomeOutput").innerHTML =
+  var rc=t.risk>=4?"rh":"";
+  var dc=t.depth==="Black Index"?"db":"";
+  var sc="style-"+t.style;
+  var excerptHtml=t.excerptParas.map(function(p){return "<p>"+esc(p)+"</p>";}).join("");
+  document.getElementById("tomeOutput").innerHTML=
     '<div class="card-title">'+esc(t.title)+'</div>'+
     '<div class="badges">'+
       '<span class="badge">'+esc(t.wing)+'</span>'+
       '<span class="badge '+dc+'">'+esc(t.depth)+'</span>'+
       '<span class="badge '+rc+'">Risk '+t.risk+'</span>'+
       '<span class="badge">'+esc(t.shelf)+'</span>'+
+      '<span class="badge">'+esc(t.tag)+'</span>'+
     '</div>'+
     '<div class="slabel">Catalog Card</div>'+
     '<div class="card-meta">'+
       '<p><b>Author:</b> '+esc(t.author)+'&nbsp;&middot;&nbsp;<b>Era:</b> '+esc(t.era)+'</p>'+
       '<p><b>Condition:</b> '+esc(t.phys)+'</p>'+
-      '<p><b>Subject:</b> '+esc(t.tag)+'</p>'+
     '</div>'+
     '<div class="slabel">Excerpt — Read Aloud</div>'+
-    '<div class="excerpt">'+excerptHtml+'</div>'+
+    '<div class="excerpt '+sc+'">'+excerptHtml+'</div>'+
     '<div class="marginalia"><b>Marginalia:</b> '+esc(t.marginalia)+'</div>'+
     '<div class="slabel">DM Payload</div>'+
     '<details><summary>Reveal DM Payload</summary><div class="dm-inner">'+
       '<div class="dm-row"><span class="dm-key">True Nature</span><span>'+esc(t.dm.type)+'</span></div>'+
-      '<div class="dm-row"><span class="dm-key">Faction Interest</span><span>'+esc(t.dm.faction)+'</span></div>'+
+      '<div class="dm-row"><span class="dm-key">Faction</span><span>'+esc(t.dm.faction)+'</span></div>'+
       '<div class="dm-row"><span class="dm-key">Hook</span><span>'+esc(t.dm.hook)+'</span></div>'+
       '<div class="dm-row"><span class="dm-key">Continuity Note</span><span>'+esc(t.dm.note)+'</span></div>'+
       '<div class="dm-row"><span class="dm-key">Consequence</span><span>'+esc(t.dm.consequence.text)+'</span></div>'+
     '</div></details>';
 }
 
-function paintLedger() {
-  var q = (document.getElementById("search").value||"").toLowerCase();
-  var list = ledger.filter(function(t){ return (t.title+" "+t.author+" "+t.wing+" "+t.tag).toLowerCase().indexOf(q)!==-1; });
-  var el = document.getElementById("ledger");
-  if (!list.length) { el.innerHTML = '<div class="ledger-empty">'+(ledger.length===0?"No tomes saved yet.":"No results.")+'</div>'; return; }
-  el.innerHTML = list.map(function(t){
-    return '<div class="li">'+
+function paintLedger(){
+  var q=(document.getElementById("search").value||"").toLowerCase();
+  var list=ledger.filter(function(t){return (t.title+" "+t.author+" "+t.wing+" "+t.tag).toLowerCase().indexOf(q)!==-1;});
+  var el=document.getElementById("ledger");
+  if(!list.length){el.innerHTML='<div class="ledger-empty">'+(ledger.length===0?"No tomes saved yet. Retrieve and save a tome to begin your ledger.":"No results match your search.")+'</div>';return;}
+  el.innerHTML=list.map(function(t,i){
+    var sc="style-"+(t.style||"academic");
+    var excerptHtml=t.excerptParas?t.excerptParas.map(function(p){return "<p>"+esc(p)+"</p>";}).join(""):"";
+    return '<div class="li" onclick="toggleLedgerItem('+i+')">'+
       '<div class="li-title">'+esc(t.title)+'</div>'+
       '<div class="li-meta">'+esc(t.wing)+' &middot; '+esc(t.depth)+' &middot; Risk '+t.risk+' &middot; '+esc(t.shelf)+'</div>'+
       '<div class="li-meta">'+esc(t.author)+' &middot; '+esc(t.era)+'</div>'+
+      '<div class="li-expanded" id="li-exp-'+i+'">'+
+        '<div class="li-excerpt '+sc+'">'+excerptHtml+'</div>'+
+        (t.marginalia?'<div class="marginalia"><b>Marginalia:</b> '+esc(t.marginalia)+'</div>':'')+
+        '<details style="margin-top:8px"><summary>DM Payload</summary><div class="dm-inner">'+
+          '<div class="dm-row"><span class="dm-key">True Nature</span><span>'+esc(t.dm.type)+'</span></div>'+
+          '<div class="dm-row"><span class="dm-key">Faction</span><span>'+esc(t.dm.faction)+'</span></div>'+
+          '<div class="dm-row"><span class="dm-key">Hook</span><span>'+esc(t.dm.hook)+'</span></div>'+
+          '<div class="dm-row"><span class="dm-key">Consequence</span><span>'+esc(t.dm.consequence.text)+'</span></div>'+
+        '</div></details>'+
+      '</div>'+
     '</div>';
   }).join("");
 }
 
-function paintClocks() {
-  paintPips("attentionPips", clocks.attention, "fa");
-  paintPips("contaminationPips", clocks.contamination, "fc");
+function toggleLedgerItem(i){
+  var el=document.getElementById("li-exp-"+i);
+  if(!el) return;
+  el.classList.toggle("open");
 }
 
-function paintPips(id, val, cls) {
-  var el = document.getElementById(id);
-  if (!el) return;
-  el.innerHTML = "";
-  for (var i=0; i<6; i++) {
-    var d = document.createElement("div");
-    d.className = "pip"+(i<val?" "+cls:"");
+function paintClocks(){
+  paintPips("attentionPips",clocks.attention,"fa");
+  paintPips("contaminationPips",clocks.contamination,"fc");
+}
+
+function paintPips(id,val,cls){
+  var el=document.getElementById(id);
+  if(!el) return;
+  el.innerHTML="";
+  for(var i=0;i<6;i++){
+    var d=document.createElement("div");
+    d.className="pip"+(i<val?" "+cls:"");
     el.appendChild(d);
   }
 }
 
-function setMode(m) {
-  mode = m;
-  document.getElementById("modeNeutral").className = "tbtn"+(m==="neutral"?" active":"");
-  document.getElementById("modeAlive").className = "tbtn"+(m==="alive"?" active":"");
-  document.getElementById("modeDesc").textContent = m==="alive" ? "Every pull can increment Attention & Contamination clocks." : "Danger only in Forbidden wing & Black Index.";
+function setMode(m){
+  mode=m;
+  document.getElementById("modeNeutral").className="tbtn"+(m==="neutral"?" active":"");
+  document.getElementById("modeAlive").className="tbtn"+(m==="alive"?" active":"");
+  document.getElementById("modeDesc").textContent=m==="alive"?"Every pull can increment Attention & Contamination clocks.":"Danger only in Forbidden wing & Black Index.";
 }
 
-document.getElementById("risk").addEventListener("input", function(){ document.getElementById("riskVal").textContent = this.value; });
-document.getElementById("btnPull").addEventListener("click", go);
-document.getElementById("btnReroll").addEventListener("click", go);
-document.getElementById("btnSave").addEventListener("click", function(){
-  if (!currentTome) return;
+function setStyle(s){
+  style=s;
+  var ids=["styleAcademic","styleOminous","styleFragmented","styleFirsthand"];
+  var styles=["academic","ominous","fragmented","firsthand"];
+  for(var i=0;i<ids.length;i++){
+    document.getElementById(ids[i]).className="sbtn"+(styles[i]===s?" active":"");
+  }
+}
+
+document.getElementById("risk").addEventListener("input",function(){document.getElementById("riskVal").textContent=this.value;});
+document.getElementById("btnPull").addEventListener("click",go);
+document.getElementById("btnReroll").addEventListener("click",go);
+document.getElementById("btnSave").addEventListener("click",function(){
+  if(!currentTome) return;
   ledger.unshift(currentTome);
-  localStorage.setItem(SK, JSON.stringify(ledger));
+  localStorage.setItem(SK,JSON.stringify(ledger));
   paintLedger();
-  var btn = document.getElementById("btnSave");
-  btn.textContent = "Saved!";
-  setTimeout(function(){ btn.textContent = "Save to Ledger"; }, 1500);
+  var btn=document.getElementById("btnSave");
+  btn.textContent="Saved!";
+  setTimeout(function(){btn.textContent="Save to Ledger";},1500);
 });
-document.getElementById("btnExport").addEventListener("click", function(){
-  var b = new Blob([JSON.stringify(ledger,null,2)],{type:"application/json"});
-  var u = URL.createObjectURL(b);
-  var a = document.createElement("a");
-  a.href=u; a.download="myrraurel_ledger.json"; a.click();
+document.getElementById("btnExport").addEventListener("click",function(){
+  var b=new Blob([JSON.stringify(ledger,null,2)],{type:"application/json"});
+  var u=URL.createObjectURL(b);
+  var a=document.createElement("a");
+  a.href=u;a.download="myrraurel_ledger.json";a.click();
   URL.revokeObjectURL(u);
 });
-document.getElementById("btnClear").addEventListener("click", function(){
-  if (!confirm("Clear ledger?")) return;
-  ledger=[]; localStorage.setItem(SK,JSON.stringify(ledger)); paintLedger();
+document.getElementById("btnClear").addEventListener("click",function(){
+  if(!confirm("Clear ledger?")) return;
+  ledger=[];localStorage.setItem(SK,JSON.stringify(ledger));paintLedger();
 });
-document.getElementById("btnResetClocks").addEventListener("click", function(){
-  if (!confirm("Reset clocks?")) return;
-  clocks={attention:0,contamination:0}; localStorage.setItem(CK,JSON.stringify(clocks)); paintClocks();
+document.getElementById("btnResetClocks").addEventListener("click",function(){
+  if(!confirm("Reset clocks?")) return;
+  clocks={attention:0,contamination:0};localStorage.setItem(CK,JSON.stringify(clocks));paintClocks();
 });
-document.getElementById("importFile").addEventListener("change", function(e){
-  if (!e.target.files||!e.target.files[0]) return;
-  var r = new FileReader();
-  r.onload = function(){
-    try { var d=JSON.parse(r.result); if (!Array.isArray(d)) throw new Error("bad"); ledger=d; localStorage.setItem(SK,JSON.stringify(ledger)); paintLedger(); }
-    catch(err){ alert("Import failed: "+err.message); }
+document.getElementById("importFile").addEventListener("change",function(e){
+  if(!e.target.files||!e.target.files[0]) return;
+  var r=new FileReader();
+  r.onload=function(){
+    try{var d=JSON.parse(r.result);if(!Array.isArray(d))throw new Error("bad");ledger=d;localStorage.setItem(SK,JSON.stringify(ledger));paintLedger();}
+    catch(err){alert("Import failed: "+err.message);}
   };
   r.readAsText(e.target.files[0]);
 });
-document.getElementById("search").addEventListener("input", paintLedger);
-document.getElementById("modeNeutral").addEventListener("click", function(){ setMode("neutral"); });
-document.getElementById("modeAlive").addEventListener("click", function(){ setMode("alive"); });
+document.getElementById("search").addEventListener("input",paintLedger);
+document.getElementById("modeNeutral").addEventListener("click",function(){setMode("neutral");});
+document.getElementById("modeAlive").addEventListener("click",function(){setMode("alive");});
+document.getElementById("styleAcademic").addEventListener("click",function(){setStyle("academic");});
+document.getElementById("styleOminous").addEventListener("click",function(){setStyle("ominous");});
+document.getElementById("styleFragmented").addEventListener("click",function(){setStyle("fragmented");});
+document.getElementById("styleFirsthand").addEventListener("click",function(){setStyle("firsthand");});
 
 paintTome();
 paintLedger();
